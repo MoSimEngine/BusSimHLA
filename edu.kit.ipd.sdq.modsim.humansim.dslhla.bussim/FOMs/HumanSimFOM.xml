@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objectModel xsi:schemaLocation="http://standards.ieee.org/IEEE1516-2010 http://standards.ieee.org/downloads/1516/1516.2-2010/IEEE1516-DIF-2010.xsd" xmlns="http://standards.ieee.org/IEEE1516-2010" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelIdentification>
+        <name>HumanSim</name>
+        <type>FOM</type>
+        <version>1.0</version>
+        <modificationDate>07.08.2018</modificationDate>
+        <securityClassification>Unclassified</securityClassification>
+        <releaseRestriction>Not HumanSim related Federates</releaseRestriction>
+        <purpose>To  define the content in the HumanSim</purpose>
+        <applicationDomain>HumanSim</applicationDomain>
+        <description>Information for the HumanSim</description>
+        <useLimitation>Derived models must reference this document</useLimitation>
+        <useHistory></useHistory>
+        <keyword>
+            <taxonomy>HumanSim</taxonomy>
+            <keywordValue>Restaurant</keywordValue>
+        </keyword>
+        <keyword>
+            <taxonomy>Food Service Industry Taxonomy</taxonomy>
+            <keywordValue>Menu</keywordValue>
+        </keyword>
+        <keyword>
+            <taxonomy>Food Service Industry Taxonomy</taxonomy>
+            <keywordValue>Waiter</keywordValue>
+        </keyword>
+        <poc>
+            <pocType>Sponsor</pocType>
+            <pocName>Frederik Reiche</pocName>
+            <pocOrg>SDQ</pocOrg>
+            <pocTelephone></pocTelephone>
+            <pocEmail>uwcvx@student.kti.edu</pocEmail>
+        </poc>
+        <poc>
+            <pocType>Author</pocType>
+            <pocName>Frederik Reiche</pocName>
+            <pocOrg>SDQ</pocOrg>
+        </poc>
+        <reference>
+            <type>HTML document</type>
+            <identification>www.fedfoods.com/restsim.html</identification>
+        </reference>
+        <reference>
+            <type>Federation Agreements</type>
+            <identification>www.fedfoods.com/restsimAgreement.pdf</identification>
+        </reference>
+        <reference>
+            <type>Dependency</type>
+            <identification>HumanSimProcess</identification>
+        </reference>
+        <other>See Mobil International Restaurant Guide for more information</other>
+        <glyph alt="Restaurant" width="32" height="32" type="GIF">R0lGODlhIAAgAKIAAAAAAP///wD//8DAwICAgP///wAAAAAAACH5BAEAAAUALAAAAAAgACAAAAOrGLLc/nCpSKu9mIXNu//eA47kJpbgMHznALxESRBq6GzEq69fPtAxzimne/E4PuBPeAsQi4COKzdzdYZQI7LouzYDWUDQqaPaGhwX9PgUs764dWAqPnrRIzURdcrv+HA9ZYB4IESHJX0eiE92dxqCbnFab4VbL4uDZ5AcRY5gmkyFapQfXI8SG6d+oS1FKKQAPFilJKSinDMoHjUmgbskisDBGcXGx2jIFwEJADs=</glyph>
+    </modelIdentification>
+    <objects>
+        <objectClass>
+            <name>HLAobjectRoot</name>
+             <sharing>Neither</sharing>
+            <attribute>
+            <name>HLAprivilegeToDeleteObject</name>
+            <dataType>HLAtoken</dataType>
+            <updateType>Static</updateType>
+            <updateCondition>NA</updateCondition>
+            <ownership>DivestAcquire</ownership>
+            <sharing>PublishSubscribe</sharing>
+            <transportation>HLAreliable</transportation>
+            <order>TimeStamp</order>
+            </attribute>
+
+            <objectClass>
+                <name>Human</name>
+                <sharing>PublishSubscribe</sharing>
+                <semantics>A human in the HumanSim</semantics>
+                <attribute>
+                   <name>HumanCollected</name>
+                    <dataType>Boolean</dataType>
+                    <updateType>Static</updateType>
+                    <updateCondition>NA</updateCondition>
+                    <ownership>DivestAcquire</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <dimensions>
+                        <dimension>Bool</dimension>
+                    </dimensions>
+                    <transportation>HLAreliable</transportation>
+                    <order>TimeStamp</order>
+                    <semantics>If human sits in bus or not</semantics>
+                </attribute>
+
+                <attribute>
+                   <name>HumanName</name>
+                    <dataType>HLAASCIIstring</dataType>
+                    <updateType>Static</updateType>
+                    <updateCondition>NA</updateCondition>
+                    <ownership>DivestAcquire</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <dimensions/>
+                    <transportation>HLAreliable</transportation>
+                    <order>TimeStamp</order>
+                    <semantics>If human sits in bus or not</semantics>
+                </attribute>
+                <attribute>
+                   <name>Destination</name>
+                    <dataType>HLAASCIIstring</dataType>
+                    <updateType>Static</updateType>
+                    <updateCondition>NA</updateCondition>
+                    <ownership>DivestAcquire</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <dimensions/>
+                    <transportation>HLAreliable</transportation>
+                    <order>TimeStamp</order>
+                    <semantics>Destination of human</semantics>
+                </attribute>
+
+            </objectClass>
+            <objectClass>
+             <name>BusStop</name>
+                <sharing>PublishSubscribe</sharing>
+                <semantics>A BusStop</semantics>
+                <attribute>
+                   <name>BusStopName</name>
+                    <dataType>HLAASCIIstring</dataType>
+                    <updateType>Static</updateType>
+                    <updateCondition>NA</updateCondition>
+                    <ownership>DivestAcquire</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <dimensions/>
+                    <transportation>HLAreliable</transportation>
+                    <order>TimeStamp</order>
+                    <semantics>The name of the BusStop</semantics>
+                </attribute>
+            </objectClass>
+        </objectClass>
+    </objects>
+    <interactions>
+        <interactionClass>
+            <name>HLAinteractionRoot</name>
+            <interactionClass>
+                <name>HumanRegistersAtBusStop</name>
+                <sharing>PublishSubscribe</sharing>
+                <dimensions/>
+                <transportation>HLAreliable</transportation>
+                <order>TimeStamp</order>
+                <semantics>An interaction to signal that a human arrived at a bus stop</semantics>
+                 <parameter>
+                    <name>HumanName</name>
+                    <dataType>HLAASCIIstring</dataType>
+                    <semantics>The name of the Human</semantics>
+                </parameter>
+                <parameter>
+                    <name>BusStopName</name>
+                    <dataType>HLAASCIIstring</dataType>
+                    <semantics>The name of the Human</semantics>
+                </parameter>
+            </interactionClass>
+            <interactionClass>
+                <name>HumanEntersBus</name>
+                <sharing>PublishSubscribe</sharing>
+                <dimensions/>
+                <transportation>HLAreliable</transportation>
+                <order>TimeStamp</order>
+                <semantics>An interaction to signal that a human arrived at a bus stop</semantics>
+                 <parameter>
+                    <name>HumanName</name>
+                    <dataType>HLAASCIIstring</dataType>
+                    <semantics>The name of the Human</semantics>
+                </parameter>
+                <parameter>
+                    <name>BusStopName</name>
+                    <dataType>HLAASCIIstring</dataType>
+                    <semantics>The name of the Human</semantics>
+                </parameter>
+            </interactionClass>
+            <interactionClass>
+                <name>HumanExitsBus</name>
+                <sharing>PublishSubscribe</sharing>
+                <dimensions/>
+                <transportation>HLAreliable</transportation>
+                <order>TimeStamp</order>
+                <semantics>An interaction to signal that a human arrived at a bus stop</semantics>
+                 <parameter>
+                    <name>HumanName</name>
+                    <dataType>HLAASCIIstring</dataType>
+                    <semantics>The name of the Human</semantics>
+                </parameter>
+                <parameter>
+                    <name>BusStopName</name>
+                    <dataType>HLAASCIIstring</dataType>
+                    <semantics>The name of the Human</semantics>
+                </parameter>
+            </interactionClass>
+        </interactionClass>
+    </interactions>
+    <dimensions>
+        <dimension>
+         <name>Bool</name>
+            <dataType>Boolean</dataType>
+            <upperBound>2</upperBound>
+            <normalization>linearEnumerated (MyBool [True, False])</normalization>
+            <value>[0..2)</value>
+        </dimension>
+    </dimensions>
+    <time>
+        <timeStamp>
+            <dataType>TimeType</dataType>
+            <semantics>Floating point value expressed in minutes</semantics>
+        </timeStamp>
+        <lookahead>
+            <dataType>LAType</dataType>
+            <semantics>Floating point value expressed in minutes (non-negative)</semantics>
+        </lookahead>
+    </time>
+    <tags>
+        <updateReflectTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </updateReflectTag>
+        <sendReceiveTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </sendReceiveTag>
+        <deleteRemoveTag>
+            <dataType>HLAASCIIstring</dataType>
+            <semantics>Reason for deletion</semantics>
+        </deleteRemoveTag>
+        <divestitureRequestTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </divestitureRequestTag>
+        <divestitureCompletionTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </divestitureCompletionTag>
+        <acquisitionRequestTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </acquisitionRequestTag>
+        <requestUpdateTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </requestUpdateTag>
+    </tags>
+
+
+  <dataTypes>
+        <enumeratedDataTypes>
+            <enumeratedData>
+                <name>Boolean</name>
+                <representation>HLAinteger32BE</representation>
+                <semantics>Boolean values</semantics>
+                <enumerator>
+                    <name>True</name>
+                    <value>101</value>
+                </enumerator>
+                <enumerator>
+                    <name>False</name>
+                    <value>102</value>
+                </enumerator>
+            </enumeratedData>
+        </enumeratedDataTypes>
+        <basicDataRepresentations>
+            <basicData>
+                <name>UnsignedShort</name>
+                <size>16</size>
+                <interpretation>Integer in the range [0, 2^16 - 1]</interpretation>
+                <endian>Big</endian>
+                <encoding>16-bit unsigned integer.</encoding>
+            </basicData>
+        </basicDataRepresentations>
+        <simpleDataTypes>
+            <simpleData>
+                <name>TimeType</name>
+                <representation>HLAfloat32BE</representation>
+                <units>Minutes</units>
+                <resolution>0.01667</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>Time representation</semantics>
+            </simpleData>
+            <simpleData>
+                <name>LAType</name>
+                <representation>HLAfloat32BE</representation>
+                <units>Minutes</units>
+                <resolution>0.01667</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>Time interval (non-negative)</semantics>
+            </simpleData>
+            <simpleData>
+                <name>HumanString</name>
+                <representation>HLAinteger32BE</representation>
+                <units>NA</units>
+                <resolution>1</resolution>
+                <accuracy>Perfect</accuracy>
+                <semantics>Employee identifier</semantics>
+            </simpleData>
+            </simpleDataTypes>
+    </dataTypes>
+</objectModel>
