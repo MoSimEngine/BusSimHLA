@@ -27,7 +27,9 @@ public class LoadPassengersEvent extends AbstractSimEventDelegator<Bus> {
         int waitingPassengers = position.getPassengersInQueue();
 
         int servedPassengers = Math.min(waitingPassengers, bus.getTotalSeats());
-
+        if(servedPassengers < waitingPassengers){
+        	Utils.log(bus, "could not serve all passengers!!!");
+        }
         //Utils.log(bus, "Loading " + servedPassengers + " passengers at bus stop " + position + "...");
         bus.load(servedPassengers);
 
@@ -73,7 +75,7 @@ public class LoadPassengersEvent extends AbstractSimEventDelegator<Bus> {
         // schedule load finished event
         LoadFinishedEvent e = new LoadFinishedEvent(totalLoadingTime, remainingPassengers, this.getModel(), "LoadFinished");
         //e.schedule(bus, totalLoadingTime);
-        m.getComponent().synchronisedAdvancedTime(0, e, bus);
+        m.getComponent().synchronisedAdvancedTime(totalLoadingTime, e, bus);
         
         
     }

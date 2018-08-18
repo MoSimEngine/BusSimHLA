@@ -57,7 +57,7 @@ public class UnloadPassengersEvent extends AbstractSimEventDelegator<Bus> {
 	        		//getFederate().sendHumanExitsInteraction(h, position, unloadingTime);
 	        		h.setCollected(false);
 	        		totalUnloadingTime += unloadingTime;
-	        		Utils.log(bus, "Unloading " + h.getName() + " at position + " + position.getName());
+//	        		Utils.log(bus, "Unloading " + h.getName() + " at position + " + position.getName());
     			} else {
     				bus.transportHuman(h);
     				}

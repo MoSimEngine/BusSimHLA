@@ -15,6 +15,7 @@ public class BusSimulationExample implements IApplication {
 	private ISimulationControl simControl;
 	private BusFederate component;
 	
+	
 	 private static final Duration MAX_SIMULATION_TIME = HumanSimValues.MAX_SIM_TIME;
 	
 	

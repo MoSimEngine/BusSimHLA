@@ -21,7 +21,7 @@ public class BusFederateAmbassador extends NullFederateAmbassador{
 	private BusFederate federate;
 	
 	protected double federateTime = 0.0;
-	protected double federateLookahead = 1.0;
+	protected double federateLookahead = 0.0;
 
 	protected boolean isRegulating = false;
 	protected boolean isConstrained = false;
@@ -83,7 +83,7 @@ public class BusFederateAmbassador extends NullFederateAmbassador{
 	@Override
 	public void discoverObjectInstance(ObjectInstanceHandle theObject, ObjectClassHandle theObjectClass,
 			String objectName) throws FederateInternalError {
-		federate.log("Discoverd Object: handle=" + theObject + ", classHandle=" + theObjectClass + ", name=" + objectName);
+		//federate.log("Discoverd Object: handle=" + theObject + ", classHandle=" + theObjectClass + ", name=" + objectName);
 		
 //		if(theObjectClass.equals(federate.humanObjectClassHandle)){
 //			federate.handleDiscoveredHuman(theObject, theObjectClass, objectName);

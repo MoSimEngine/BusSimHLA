@@ -109,7 +109,6 @@ public class BusFederate {
 		
 		log(fedInfoStr + "Creating Federation");
 		try {			
-			System.out.println((new File("FOMS/HumanSimFOM.xml")).toURI().toURL() );
 			URL[] modules = new URL[] { (new File("FOMS/HumanSimFOM.xml")).toURI().toURL() };
 
 			rtiamb.createFederationExecution("HumanSim", modules);
@@ -178,7 +177,13 @@ public class BusFederate {
 		for (Human h : simulation.getHumans()) {
 			log("Human: " + h.getName());
 		}
+		log("----------" + simulation.getHumans().size() + "------------");
 		
+
+		for (Human hu : simulation.getHumans()) {
+			//Utils.log(simulation.getBus "Human in Sim: " + hu.getName());
+			sendCollectedAcquireRequest(hu);
+		}
 		simulation.startSimulation();
 		//
 		//Start Simulation
@@ -200,10 +205,7 @@ public class BusFederate {
 		//Wait to start busSim
 		
 		//advanceTime(1);
-		for (Human hu : simulation.getHumans()) {
-			//Utils.log(simulation.getBus "Human in Sim: " + hu.getName());
-			sendCollectedAcquireRequest(hu);
-		}
+		
 		
 		
 		
@@ -360,7 +362,7 @@ public class BusFederate {
 			AttributeHandleValueMap attributes = rtiamb.getAttributeHandleValueMapFactory().create(1);
 			HLAASCIIstring busStopName = encoderFactory.createHLAASCIIstring(tmp.getName());
 			attributes.put(busStopNameAttributeHandle, busStopName.toByteArray());
-			HLAfloat64Time time = timeFactory.makeTime( fedamb.federateTime + fedamb.federateLookahead);
+			HLAfloat64Time time = timeFactory.makeTime( fedamb.federateTime + 1.0);
 			rtiamb.updateAttributeValues(tmp.getOih(), attributes, generateTag(), time);
 			Utils.log(simulation.getBus(), fedInfoStr + "Registered BusStop ObjectInstance with name :"+ tmp.getName() + " got handle" + tmp.getOih().toString() );
 			
@@ -373,16 +375,17 @@ public class BusFederate {
 	 * timestep. It will then wait until a notification of the time advance grant
 	 * has been received.
 	 */
-	public void advanceTime( double timestep ) throws RTIexception
+	public synchronized boolean advanceTime( double timestep ) throws RTIexception
 	{
 		double advancingTo = 0;
 		double miniStep = 0.000000001;
 		if(fedamb.federateTime + timestep <= HumanSimValues.MAX_SIM_TIME.toSeconds().value()){
 			advancingTo = fedamb.federateTime + timestep;
 		} else {
-			
 			Utils.log(simulation.getBus(), "Sim overtime - wants to advance to: " + fedamb.federateTime + timestep + " current time: " + fedamb.federateTime);
 			advancingTo =  HumanSimValues.MAX_SIM_TIME.toSeconds().value() + miniStep;
+			return false;
+			
 		}
 		
 		// request the advance
@@ -395,7 +398,7 @@ public class BusFederate {
 		rtiamb.nextMessageRequest( time );
 		} catch (Exception e){
 			log(e.getMessage());
-			simulation.getSimulationControl().stop();
+			return false;
 		}
 		
 		success = true;
@@ -407,9 +410,10 @@ public class BusFederate {
 		{
 			rtiamb.evokeMultipleCallbacks( 0.1, 0.2 );
 		}
+		return true;
 	}
 	
-	public void synchronisedAdvancedTime(double timestep, AbstractSimEventDelegator simevent, AbstractSimEntityDelegator simentity ){
+	public synchronized void synchronisedAdvancedTime(double timestep, AbstractSimEventDelegator simevent, AbstractSimEntityDelegator simentity ){
 //		System.out.println("AbstractSimEngine Time:" + simulation.getSimulationControl().getCurrentSimulationTime());
 //		System.out.println("Federate Time:" + fedamb.federateTime);
 //		System.out.println("TimeStep:" + timestep);
@@ -424,16 +428,38 @@ public class BusFederate {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
+//		if(timestep != 0.0){
+//			while(simEngineNextTime > getCurrentFedTime()){
+//				realTimeStep = simEngineNextTime - getCurrentFedTime();
+//				try {
+//					if(!advanceTime(realTimeStep)){
+//						
+//						System.out.println("Not Advancing Time");
+//						//simulation.getSimulationControl().stop();
+//						return;
+//					}
+//				} catch (RTIexception e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//			}
+//			
+//		}
+		
 		if(timestep != 0.0){
-			while(simEngineNextTime > getCurrentFedTime()){
-				realTimeStep = simEngineNextTime - getCurrentFedTime();
-				try {
-					advanceTime(realTimeStep);
-				} catch (RTIexception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
+			
+					try {
+						if(!advanceTime(timestep)){
+							
+							System.out.println("Not Advancing Time");
+							//simulation.getSimulationControl().stop();
+							return;
+						}
+					} catch (RTIexception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		
 			
 		}
 		
@@ -481,8 +507,13 @@ public class BusFederate {
 		attributes.put(collectedHandle, collectedValue.toByteArray());
 		
 		HLAfloat64Time time = timeFactory.makeTime( fedamb.federateTime + additionalTime);
-		//Utils.log(simulation.getBus "Modify human collect to" + collected);
+//		Utils.log(simulation.getBus(), "Modify human collect to " + collected);
+		
+		try{
 		rtiamb.updateAttributeValues(human.getOih(), attributes, generateTag(), time);
+		} catch (Exception e){
+			System.out.println("Desired Time: " + time.getValue() + " Currrent Time" + fedamb.federateTime + " RTI time " + rtiamb.queryLogicalTime().toString() );
+		}
 	}
 	
 	
