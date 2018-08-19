@@ -255,15 +255,15 @@ public class BusFederate {
 	public void cleanFederate() throws Exception{
 		rtiamb.resignFederationExecution(ResignAction.DELETE_OBJECTS);
 		Utils.log(simulation.getBus(), "Resigned from Federationn");
-		
-		try{
-			rtiamb.destroyFederationExecution("HumanSim1");
-			Utils.log(simulation.getBus(), "Destroyed HumanSim federation");
-		} catch (FederationExecutionDoesNotExist fedne){
-			Utils.log(simulation.getBus(), " Federation does not exist");
-		} catch (FederatesCurrentlyJoined fcj) {
-			Utils.log(simulation.getBus(), "Federates still joined at HumanSim");
-		}
+//		
+//		try{
+//			rtiamb.destroyFederationExecution("HumanSim1");
+//			Utils.log(simulation.getBus(), "Destroyed HumanSim federation");
+//		} catch (FederationExecutionDoesNotExist fedne){
+//			Utils.log(simulation.getBus(), " Federation does not exist");
+//		} catch (FederatesCurrentlyJoined fcj) {
+//			Utils.log(simulation.getBus(), "Federates still joined at HumanSim");
+//		}
 	}
 	private void enableTimePolicy() throws Exception {
 		
@@ -486,7 +486,7 @@ public class BusFederate {
 						if(!advanceTime(timestep)){
 							
 							System.out.println("Not Advancing Time");
-							//simulation.getSimulationControl().stop();
+							simulation.getSimulationControl().stop();
 							return;
 						}
 					} catch (RTIexception e) {
