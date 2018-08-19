@@ -119,7 +119,7 @@ public class BusFederate {
 		try {			
 			URL[] modules = new URL[] { (new File("FOMS/HumanSimFOM.xml")).toURI().toURL() };
 
-			rtiamb.createFederationExecution("HumanSim", modules);
+			rtiamb.createFederationExecution("HumanSim1", modules);
 			log(fedInfoStr + "Created Federation");
 		} catch (FederationExecutionAlreadyExists exists) {
 			log(fedInfoStr + "Didn't create federation, it already existed");
@@ -130,7 +130,7 @@ public class BusFederate {
 		}
 		
 		URL[] joinModules = new URL[] { (new File("FOMS/HumanSimFOM.xml")).toURI().toURL() };
-		rtiamb.joinFederationExecution(federateName, "HumanSim", "HumanSim", joinModules);
+		rtiamb.joinFederationExecution(federateName, "HumanSim1", "HumanSim1", joinModules);
 		
 		
 		log(fedInfoStr + "Joined fedration as " + federateName);
@@ -257,7 +257,7 @@ public class BusFederate {
 		Utils.log(simulation.getBus(), "Resigned from Federationn");
 		
 		try{
-			rtiamb.destroyFederationExecution("HumanSim");
+			rtiamb.destroyFederationExecution("HumanSim1");
 			Utils.log(simulation.getBus(), "Destroyed HumanSim federation");
 		} catch (FederationExecutionDoesNotExist fedne){
 			Utils.log(simulation.getBus(), " Federation does not exist");
