@@ -157,9 +157,8 @@ public class BusFederateAmbassador extends NullFederateAmbassador{
 		
 		//federate.log("Received bus stop registration from: " + humanName.getValue() + "at BusStop: " + busStop.getValue());
 		
-		federate.handleRegistration(humanName.getValue(), busStop.getValue());
-		
-		
+		federate.handleRegistration(federate.service.filter(String.class.getTypeName(), map.get(federate.humanNameRegisterHandle)), 
+				federate.service.filter(String.class.getTypeName(), map.get(federate.busStopNameRegisterHandle)));
 	}
 	
 	public String decodeStringValues(byte[] bytes){

@@ -9,6 +9,13 @@ import java.util.LinkedList;
 
 import de.uka.ipd.sdq.simulation.abstractsimengine.AbstractSimEntityDelegator;
 import de.uka.ipd.sdq.simulation.abstractsimengine.AbstractSimEventDelegator;
+import edu.kit.ipd.sdq.modsim.adaption.BaseConnectedHLAByteArrayConversion;
+import edu.kit.ipd.sdq.modsim.adaption.ByteArrayToInteger32BEConversion;
+import edu.kit.ipd.sdq.modsim.adaption.ByteArrayToStringConversion;
+import edu.kit.ipd.sdq.modsim.adaption.ComponentHLAAdaptationService;
+import edu.kit.ipd.sdq.modsim.adaption.DataMarker;
+import edu.kit.ipd.sdq.modsim.adaption.DataMarkerMapping;
+import edu.kit.ipd.sdq.modsim.adaption.HLAByteArrayDerivedElement;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.entities.BusStop;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.entities.Human;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.util.Utils;
@@ -88,7 +95,7 @@ public class BusFederate {
 	private int initialisedHumans = 0;
 	private BusModel simulation;
 	private LinkedList<ObjectInstanceHandle> humanHandles;
-	 
+	public ComponentHLAAdaptationService service;
 	 
 	public BusFederate(BusModel simulation){
 		this.simulation = simulation;
@@ -108,6 +115,7 @@ public class BusFederate {
 		rtiamb.connect(fedamb, CallbackModel.HLA_EVOKED);
 		
 		log(fedInfoStr + "Creating Federation");
+		
 		try {			
 			URL[] modules = new URL[] { (new File("FOMS/HumanSimFOM.xml")).toURI().toURL() };
 
@@ -136,6 +144,32 @@ public class BusFederate {
 			rtiamb.evokeMultipleCallbacks(0.1, 0.2);
 		}
 
+		
+		service = new ComponentHLAAdaptationService();
+		
+
+		DataMarker byteArray = new DataMarker("byteArray");
+		DataMarker HLAString = new DataMarker("HLAString");
+		DataMarker HLAInt = new DataMarker("HLAInt32");
+		
+		
+		DataMarkerMapping mappingByteArray = new DataMarkerMapping(byteArray, byte[].class.getTypeName());
+		DataMarkerMapping mappingHLAString = new DataMarkerMapping(HLAString, String.class.getTypeName());
+		DataMarkerMapping mappingHLAInt32 = new DataMarkerMapping(HLAInt, Integer.class.getTypeName());
+		
+		
+		BaseConnectedHLAByteArrayConversion byteArrayDesription = new BaseConnectedHLAByteArrayConversion(mappingByteArray);
+		
+	
+		HLAByteArrayDerivedElement HLAStringElement = new HLAByteArrayDerivedElement(mappingHLAString, new ByteArrayToStringConversion(encoderFactory));
+		HLAByteArrayDerivedElement HLAInt32Element = new HLAByteArrayDerivedElement(mappingHLAInt32, new ByteArrayToInteger32BEConversion(encoderFactory));
+		byteArrayDesription.addDerivedElement(HLAStringElement);
+		byteArrayDesription.addDerivedElement(HLAInt32Element);
+		
+		service.addDescription(byteArrayDesription);
+		
+		
+		
 		//waitForUser();
 		waitForUser();
 		rtiamb.synchronizationPointAchieved(HumanSimValues.READY_TO_RUN);
@@ -606,9 +640,9 @@ public class BusFederate {
 		for(AttributeHandle handle : attributes.keySet()){
 			if(handle.equals(humanNameAttributeHandle)){
 				//log("found Human Name Attribute Handle handle");
-				humanName = fedamb.decodeStringValues(attributes.get(humanNameAttributeHandle));
+				humanName = (String)service.filter(String.class.getTypeName(), attributes.get(humanNameAttributeHandle));
 			} else if (handle.equals(destinationHandle)) {
-				destination = fedamb.decodeStringValues(attributes.get(destinationHandle));
+				destination = (String)service.filter(String.class.getTypeName(),attributes.get(destinationHandle));
 			} else {
 				//log("Got more than expected");
 			}
