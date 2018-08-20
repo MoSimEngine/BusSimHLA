@@ -24,6 +24,7 @@ public class LoadPassengersEvent extends AbstractSimEventDelegator<Bus> {
     public void eventRoutine(Bus bus) {
     	BusModel m = (BusModel)this.getModel();
         BusStop position = bus.getPosition();
+//        System.out.println(position.getName());
         int waitingPassengers = position.getPassengersInQueue();
 
         int servedPassengers = Math.min(waitingPassengers, bus.getTotalSeats());
@@ -36,7 +37,7 @@ public class LoadPassengersEvent extends AbstractSimEventDelegator<Bus> {
         int remainingPassengers = waitingPassengers - servedPassengers;
         
         double totalLoadingTime = 0;
-        totalLoadingTime = servedPassengers * Bus.LOADING_TIME_PER_PASSENGER.toSeconds().value();
+        totalLoadingTime = 0;
         for (int i = 0; i < servedPassengers; i++){
         	//System.out.println("Found Passenger");
         	Human h = position.getPassenger();

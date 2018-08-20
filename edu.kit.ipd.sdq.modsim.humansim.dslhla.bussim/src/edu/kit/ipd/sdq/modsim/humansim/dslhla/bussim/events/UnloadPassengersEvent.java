@@ -36,7 +36,7 @@ public class UnloadPassengersEvent extends AbstractSimEventDelegator<Bus> {
         	Human h = bus.unloadHuman();
         	if(h.getDestination().equals(bus.getPosition())){
         		Utils.log(bus, "Unloading " + h.getName() + " at position " + position.getName());
-        		totalUnloadingTime += Bus.UNLOADING_TIME_PER_PASSENGER.toSeconds().value();
+
         		
         		
         		if(HumanSimValues.USE_SPIN_WAIT){

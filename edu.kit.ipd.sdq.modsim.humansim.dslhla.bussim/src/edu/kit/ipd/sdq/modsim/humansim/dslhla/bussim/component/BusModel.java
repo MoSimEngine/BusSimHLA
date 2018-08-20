@@ -124,13 +124,15 @@ public class BusModel extends AbstractSimulationModel{
     }
 
 	public void startSimulation(){
+		
+		System.out.println("Start bus at " + component.getCurrentFedTime());
 	     if (PROCESS_ORIENTED) {
 	            // schedule a process for each bus
-	            new BusProcess(bus).scheduleAt(0);
+	            new BusProcess(bus).scheduleAt(component.getCurrentFedTime());
 	        } else { // event-oriented
 	            // schedule intitial event for the bus
-	            new LoadPassengersEvent(this, "Load Passengers").schedule(bus, 0);
-	            
+	            LoadPassengersEvent e = new LoadPassengersEvent(this, "Load Passengers");
+	            component.synchronisedAdvancedTime(0.0, e, bus);
 	            
 
 	            

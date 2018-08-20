@@ -202,7 +202,7 @@ public class BusFederate {
 		
 		
 		while(initialisedHumans != HumanSimValues.NUM_HUMANS){
-			advanceTime(0.1);
+			advanceTime(1.0);
 			rtiamb.evokeMultipleCallbacks(0.1, 0.2);
 
 		}
@@ -414,7 +414,10 @@ public class BusFederate {
 		double advancingTo = 0;
 		double miniStep = 0.000000001;
 		if(fedamb.federateTime + timestep <= HumanSimValues.MAX_SIM_TIME.toSeconds().value()){
+//			System.out.println("FedTime: " + fedamb.federateTime);
+//			System.out.println("Timestelp: " + timestep);
 			advancingTo = fedamb.federateTime + timestep;
+//			System.out.println("AdvancingTo: " + advancingTo);
 		} else {
 			Utils.log(simulation.getBus(), "Sim overtime - wants to advance to: " + fedamb.federateTime + timestep + " current time: " + fedamb.federateTime);
 			advancingTo =  HumanSimValues.MAX_SIM_TIME.toSeconds().value() + miniStep;
@@ -427,16 +430,23 @@ public class BusFederate {
 		HLAfloat64Time time = timeFactory.makeTime( advancingTo );
 		boolean success = false;
 		
-		while(!success){
+		if(HumanSimValues.MESSAGE){
 		try{
 		rtiamb.nextMessageRequest( time );
 		} catch (Exception e){
 			log(e.getMessage());
 			return false;
 		}
-		
-		success = true;
+		} else {
+			try{
+				rtiamb.timeAdvanceRequest( time );
+				} catch (Exception e){
+					log(e.getMessage());
+					return false;
+				}
 		}
+		
+		
 		
 		// wait for the time advance to be granted. ticking will tell the
 		// LRC to start delivering callbacks to the federate
@@ -444,6 +454,7 @@ public class BusFederate {
 		{
 			rtiamb.evokeMultipleCallbacks( 0.1, 0.2 );
 		}
+
 		return true;
 	}
 	
@@ -452,10 +463,7 @@ public class BusFederate {
 //		System.out.println("Federate Time:" + fedamb.federateTime);
 //		System.out.println("TimeStep:" + timestep);
 		
-		double abstractSimEngineTime = simulation.getSimulationControl().getCurrentSimulationTime();
-		double simEngineNextTime = abstractSimEngineTime  + timestep;
-		double timeDiffFedTimeSETime = getCurrentFedTime() - abstractSimEngineTime;
-		double realTimeStep = 0.0;
+
 //		try {
 //			advanceTime(timestep);
 //		} catch (RTIexception e) {
@@ -509,7 +517,7 @@ public class BusFederate {
 		parameters.put(busStopNameEnterHandle, busStopName.toByteArray());
 		HLAfloat64Time time = timeFactory.makeTime( fedamb.federateTime + loadingTime);
 		
-		Utils.log(simulation.getBus(), "Sending Enter  Interaction for Human"+ human.getName() + " at busstop " + busStop.getName() + " with handle:" + humanExitsBusHandle);
+		//Utils.log(simulation.getBus(), "Sending Enter  Interaction for Human"+ human.getName() + " at busstop " + busStop.getName() + " with handle:" + humanExitsBusHandle);
 		rtiamb.sendInteraction( humanEntersBusHandle, parameters, generateTag(), time);
 	}
 	
@@ -542,11 +550,11 @@ public class BusFederate {
 		
 		HLAfloat64Time time = timeFactory.makeTime( fedamb.federateTime + additionalTime);
 //		Utils.log(simulation.getBus(), "Modify human collect to " + collected);
-		
+		//System.out.println("Sending Collected " + "TimeStep: " + additionalTime + "Resulting Time:" + time.getValue() + "Current time:" + fedamb.federateTime);
 		try{
 		rtiamb.updateAttributeValues(human.getOih(), attributes, generateTag(), time);
 		} catch (Exception e){
-			System.out.println("Desired Time: " + time.getValue() + " Currrent Time" + fedamb.federateTime + " RTI time " + rtiamb.queryLogicalTime().toString() );
+			System.out.println("In Collected Exception");
 		}
 	}
 	
