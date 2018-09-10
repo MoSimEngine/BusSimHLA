@@ -9,10 +9,10 @@ import java.util.LinkedList;
 
 import de.uka.ipd.sdq.simulation.abstractsimengine.AbstractSimEntityDelegator;
 import de.uka.ipd.sdq.simulation.abstractsimengine.AbstractSimEventDelegator;
-import edu.kit.ipd.sdq.modsim.adaption.BaseConnectedHLAByteArrayConversion;
+import edu.kit.ipd.sdq.modsim.adaption.HLAByteArrayAdaption;
 import edu.kit.ipd.sdq.modsim.adaption.ByteArrayToInteger32BEConversion;
 import edu.kit.ipd.sdq.modsim.adaption.ByteArrayToStringConversion;
-import edu.kit.ipd.sdq.modsim.adaption.ComponentHLAAdaptationService;
+import edu.kit.ipd.sdq.modsim.adaption.HLAAdapter;
 import edu.kit.ipd.sdq.modsim.adaption.DataMarker;
 import edu.kit.ipd.sdq.modsim.adaption.DataMarkerMapping;
 import edu.kit.ipd.sdq.modsim.adaption.HLAByteArrayDerivedElement;
@@ -95,7 +95,7 @@ public class BusFederate {
 	private int initialisedHumans = 0;
 	private BusModel simulation;
 	private LinkedList<ObjectInstanceHandle> humanHandles;
-	public ComponentHLAAdaptationService service;
+	public HLAAdapter adapterService;
 	 
 	public BusFederate(BusModel simulation){
 		this.simulation = simulation;
@@ -145,20 +145,20 @@ public class BusFederate {
 		}
 
 		
-		service = new ComponentHLAAdaptationService();
+		adapterService = new HLAAdapter();
 		
 
 		DataMarker byteArray = new DataMarker("byteArray");
-		DataMarker HLAString = new DataMarker("HLAString");
-		DataMarker HLAInt = new DataMarker("HLAInt32");
+		DataMarker stringMarker = new DataMarker("string");
+		DataMarker intMarker = new DataMarker("int");
 		
 		
 		DataMarkerMapping mappingByteArray = new DataMarkerMapping(byteArray, byte[].class.getTypeName());
-		DataMarkerMapping mappingHLAString = new DataMarkerMapping(HLAString, String.class.getTypeName());
-		DataMarkerMapping mappingHLAInt32 = new DataMarkerMapping(HLAInt, Integer.class.getTypeName());
+		DataMarkerMapping mappingHLAString = new DataMarkerMapping(stringMarker, String.class.getTypeName());
+		DataMarkerMapping mappingHLAInt32 = new DataMarkerMapping(intMarker, Integer.class.getTypeName());
 		
 		
-		BaseConnectedHLAByteArrayConversion byteArrayDesription = new BaseConnectedHLAByteArrayConversion(mappingByteArray);
+		HLAByteArrayAdaption byteArrayDesription = new HLAByteArrayAdaption(mappingByteArray);
 		
 	
 		HLAByteArrayDerivedElement HLAStringElement = new HLAByteArrayDerivedElement(mappingHLAString, new ByteArrayToStringConversion(encoderFactory));
@@ -166,7 +166,7 @@ public class BusFederate {
 		byteArrayDesription.addDerivedElement(HLAStringElement);
 		byteArrayDesription.addDerivedElement(HLAInt32Element);
 		
-		service.addDescription(byteArrayDesription);
+		adapterService.addDescription(byteArrayDesription);
 		
 		
 		
@@ -324,21 +324,9 @@ public class BusFederate {
 	private void publishAndSubscribe() throws RTIexception {
 		registerAtBusStopHandle = rtiamb.getInteractionClassHandle("HLAinteractionRoot.HumanRegistersAtBusStop");
 		rtiamb.subscribeInteractionClass(registerAtBusStopHandle);
-
-		humanEntersBusHandle = rtiamb.getInteractionClassHandle("HLAinteractionRoot.HumanEntersBus");
-		rtiamb.publishInteractionClass(humanEntersBusHandle);
 		
-		humanExitsBusHandle = rtiamb.getInteractionClassHandle("HLAinteractionRoot.HumanExitsBus");
-		rtiamb.publishInteractionClass(humanExitsBusHandle);
-		
-		
-
-		humanNameEnterBusHandle = rtiamb.getParameterHandle(humanEntersBusHandle, "HumanName");
-		humanNameExitBusHandle = rtiamb.getParameterHandle(humanExitsBusHandle, "HumanName");
 		humanNameRegisterHandle = rtiamb.getParameterHandle(registerAtBusStopHandle, "HumanName");
 		
-		busStopNameEnterHandle = rtiamb.getParameterHandle(humanEntersBusHandle, "BusStopName");
-		busStopNameExitHandle = rtiamb.getParameterHandle(humanExitsBusHandle, "BusStopName");
 		busStopNameRegisterHandle = rtiamb.getParameterHandle(registerAtBusStopHandle, "BusStopName");
 		
 		humanObjectClassHandle = rtiamb.getObjectClassHandle("HLAobjectRoot.Human");
@@ -368,7 +356,6 @@ public class BusFederate {
 		AttributeHandleSet busStopAttributes = rtiamb.getAttributeHandleSetFactory().create();
 		busStopAttributes.add(busStopNameAttributeHandle);
 		rtiamb.publishObjectClassAttributes(busStopObjectClassHandle, busStopAttributes);
-		rtiamb.subscribeObjectClassAttributes(busStopObjectClassHandle, busStopAttributes);
 		
 	}
 	
@@ -590,34 +577,13 @@ public class BusFederate {
 		
 		//log("Register Action  with HumanName:" + humanName + " for BusStop " + busStop);
 		boolean humanFound = false;
-		Human register = null;
-		for (Human humanBS : simulation.getHumans()) {
-			if(humanBS.getName().equals(humanName)){
-				//this.log("Human Found while register");
-				register = humanBS;
-				humanFound = true;
-				break;
-			}
-		}
 		
-		if(!humanFound){
+		
+		if(!simulation.registerHumanAtBusStop(humanName, busStop)){
 			//this.log(this.fedInfoStr + "Human Not found");
 			regCalls.add(new RegisterCall(humanName, busStop, fedamb.federateTime));
 			return;
-		}
-		
-		
-		for(int i = 0; i < simulation.getStops().length; i++){
-			if(simulation.getStops()[i].getName().equals(busStop.toString())){
-				
-				simulation.getStops()[i].setPassenger(register);
-				//log("Register Action  with HumanName:" + register.getName() + " for BusStop " + simulation.getStops()[i].getName());
-				//Utils.log(simulation.getBus "Bus is in State:" + bus.getState().toString());
-				return;
-			}
-		}
-		
-		
+		}	
 	}
 	
 	
@@ -648,9 +614,9 @@ public class BusFederate {
 		for(AttributeHandle handle : attributes.keySet()){
 			if(handle.equals(humanNameAttributeHandle)){
 				//log("found Human Name Attribute Handle handle");
-				humanName = (String)service.filter(String.class.getTypeName(), attributes.get(humanNameAttributeHandle));
+				humanName = (String)adapterService.filter(String.class.getTypeName(), attributes.get(humanNameAttributeHandle));
 			} else if (handle.equals(destinationHandle)) {
-				destination = (String)service.filter(String.class.getTypeName(),attributes.get(destinationHandle));
+				destination = (String)adapterService.filter(String.class.getTypeName(),attributes.get(destinationHandle));
 			} else {
 				//log("Got more than expected");
 			}

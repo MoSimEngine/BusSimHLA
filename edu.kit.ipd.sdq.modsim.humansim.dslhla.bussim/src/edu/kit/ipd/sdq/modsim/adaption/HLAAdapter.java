@@ -7,15 +7,15 @@ import hla.rti1516e.encoding.EncoderFactory;
 import hla.rti1516e.encoding.HLAASCIIstring;
 import hla.rti1516e.time.HLAfloat64TimeFactory;
 
-public class ComponentHLAAdaptationService {
+public class HLAAdapter {
 
 	protected EncoderFactory encoderFactory; // set when we join
 	LinkedList<AdaptationDescription> attachments;
-	BaseConnectedHLAByteArrayConversion byteArrayDescription;
+	HLAByteArrayAdaption byteArrayDescription;
 
 	
 	
-	public ComponentHLAAdaptationService(){
+	public HLAAdapter(){
 
 	
 		attachments = new LinkedList<AdaptationDescription>();
@@ -27,8 +27,8 @@ public class ComponentHLAAdaptationService {
 	@SuppressWarnings("unchecked")
 	public <E> E filter(String reqType, byte[] array){
 		for (AdaptationDescription description : attachments) {
-			if(description instanceof BaseConnectedHLAByteArrayConversion){
-				BaseConnectedHLAByteArrayConversion tmp = (BaseConnectedHLAByteArrayConversion )description;
+			if(description instanceof HLAByteArrayAdaption){
+				HLAByteArrayAdaption tmp = (HLAByteArrayAdaption )description;
 				if(tmp.baseMarker.getType().equals(array.getClass().getTypeName())){
 					for (HLAByteArrayDerivedElement element : tmp.getDerived()) {
 						if(reqType.equals(String.class.getTypeName()) && reqType.equals(element.marker.getType())){
@@ -46,8 +46,8 @@ public class ComponentHLAAdaptationService {
 	@SuppressWarnings("unchecked")
 	public <E> byte[] filter(E convert){
 		for (AdaptationDescription description : attachments) {
-			if(description instanceof BaseConnectedHLAByteArrayConversion){
-				BaseConnectedHLAByteArrayConversion tmp = (BaseConnectedHLAByteArrayConversion )description;
+			if(description instanceof HLAByteArrayAdaption){
+				HLAByteArrayAdaption tmp = (HLAByteArrayAdaption )description;
 				if(tmp.baseMarker.getType().equals(byte[].class.getTypeName())){
 					for (HLAByteArrayDerivedElement element : tmp.getDerived()) {
 						if(element.marker.getType().equals(convert.getClass().getTypeName()) && convert.getClass().getTypeName().equals(String.class.getTypeName())){

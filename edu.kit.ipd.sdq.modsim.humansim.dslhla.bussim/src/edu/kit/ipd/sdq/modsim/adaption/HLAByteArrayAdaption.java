@@ -2,12 +2,12 @@ package edu.kit.ipd.sdq.modsim.adaption;
 
 import java.util.LinkedList;
 
-public class BaseConnectedHLAByteArrayConversion extends AdaptationDescription{
+public class HLAByteArrayAdaption extends AdaptationDescription{
 
 	DataMarkerMapping baseMarker;
 	private LinkedList<HLAByteArrayDerivedElement> derived;
 	
-	public BaseConnectedHLAByteArrayConversion(DataMarkerMapping baseMarker){
+	public HLAByteArrayAdaption(DataMarkerMapping baseMarker){
 		super("BaseConnectedHLAByteArray");
 		this.baseMarker = baseMarker;
 		derived = new LinkedList<HLAByteArrayDerivedElement>();
