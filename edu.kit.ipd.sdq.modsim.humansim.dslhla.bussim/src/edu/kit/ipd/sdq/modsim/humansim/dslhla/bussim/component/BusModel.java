@@ -164,4 +164,23 @@ public class BusModel extends AbstractSimulationModel{
 	public void setComponent(BusFederate component){
 		this.component = component;
 	}
+	
+	public boolean registerHumanAtBusStop(String humanName, String busStop){
+		
+		for (Human humanBS : getHumans()) {
+			if(humanBS.getName().equals(humanName)){
+				//this.log("Human Found while register");
+				for(int i = 0; i < getStops().length; i++){
+					if(getStops()[i].getName().equals(busStop.toString())){
+						
+						getStops()[i].setPassenger(humanBS);
+						//log("Register Action  with HumanName:" + register.getName() + " for BusStop " + simulation.getStops()[i].getName());
+						//Utils.log(simulation.getBus "Bus is in State:" + bus.getState().toString());
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
 }
