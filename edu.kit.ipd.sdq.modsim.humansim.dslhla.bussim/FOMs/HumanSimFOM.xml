@@ -162,7 +162,7 @@
                 <dimensions/>
                 <transportation>HLAreliable</transportation>
                 <order>TimeStamp</order>
-                <semantics>An interaction to signal that a human arrived at a bus stop</semantics>
+                <semantics>An interaction to signal that a human leaves a bus stop without beeing picked up</semantics>
                  <parameter>
                     <name>HumanName</name>
                     <dataType>HLAASCIIstring</dataType>

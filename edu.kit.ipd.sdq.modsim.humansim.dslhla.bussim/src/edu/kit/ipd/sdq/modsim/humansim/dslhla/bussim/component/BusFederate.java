@@ -166,10 +166,6 @@ public class BusFederate {
 		//Initialise BusStops
         initialiseBusStops();
 	
-      
-       	
-
-        
 		while(simulation.getHumans().size() != HumanSimValues.NUM_HUMANS){
 			if(HumanSimValues.EVOKE){
 				advanceTime(1.0);
@@ -178,10 +174,7 @@ public class BusFederate {
 			System.out.print("");
 			}
 		}
-		
-		System.out.println("");
-		
-		
+
 		for (Human h : simulation.getHumans()) {
 			log("Human: " + h.getName());
 		}
