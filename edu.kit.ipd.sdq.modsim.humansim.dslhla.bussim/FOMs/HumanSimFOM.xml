@@ -148,7 +148,30 @@
                 <parameter>
                     <name>BusStopName</name>
                     <dataType>HLAASCIIstring</dataType>
+                    <semantics>The name of the bus stop to register</semantics>
+                </parameter>
+                <parameter>
+                    <name>DestinationName</name>
+                    <dataType>HLAASCIIstring</dataType>
+                    <semantics>The name of the bus stop to be unloaded</semantics>
+                </parameter>
+            </interactionClass>
+            <interactionClass>
+                <name>HumanUnRegistersAtBusStop</name>
+                <sharing>PublishSubscribe</sharing>
+                <dimensions/>
+                <transportation>HLAreliable</transportation>
+                <order>TimeStamp</order>
+                <semantics>An interaction to signal that a human arrived at a bus stop</semantics>
+                 <parameter>
+                    <name>HumanName</name>
+                    <dataType>HLAASCIIstring</dataType>
                     <semantics>The name of the Human</semantics>
+                </parameter>
+                <parameter>
+                    <name>BusStopName</name>
+                    <dataType>HLAASCIIstring</dataType>
+                    <semantics>The name of the bus stop to register</semantics>
                 </parameter>
             </interactionClass>
             <interactionClass>
@@ -157,7 +180,7 @@
                 <dimensions/>
                 <transportation>HLAreliable</transportation>
                 <order>TimeStamp</order>
-                <semantics>An interaction to signal that a human arrived at a bus stop</semantics>
+                <semantics>An interaction to signal that a human is loaded into a bus</semantics>
                  <parameter>
                     <name>HumanName</name>
                     <dataType>HLAASCIIstring</dataType>
@@ -175,7 +198,7 @@
                 <dimensions/>
                 <transportation>HLAreliable</transportation>
                 <order>TimeStamp</order>
-                <semantics>An interaction to signal that a human arrived at a bus stop</semantics>
+                <semantics>An interaction to signal that a human is unloaded</semantics>
                  <parameter>
                     <name>HumanName</name>
                     <dataType>HLAASCIIstring</dataType>
@@ -185,6 +208,11 @@
                     <name>BusStopName</name>
                     <dataType>HLAASCIIstring</dataType>
                     <semantics>The name of the Human</semantics>
+                </parameter>
+                    <parameter>
+                    <name>PassedTime</name>
+                    <dataType>HLAfloat64BE</dataType>
+                    <semantics> The passed time in a double </semantics>
                 </parameter>
             </interactionClass>
         </interactionClass>

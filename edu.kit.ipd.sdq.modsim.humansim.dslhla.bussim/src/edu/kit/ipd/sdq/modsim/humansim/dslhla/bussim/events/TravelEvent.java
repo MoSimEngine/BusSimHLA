@@ -20,6 +20,7 @@ public class TravelEvent extends AbstractSimEventDelegator<Bus> {
     	BusModel m = (BusModel)this.getModel();
         RouteSegment segment = bus.travel();
         Utils.log(bus, "Travelling to station " + segment.getTo());
+        //System.out.println("RTITime:" + m.getComponent().getCurrentFedTime());
         double drivingTime = Duration.hours(segment.getDistance() / (double) segment.getAverageSpeed()).toSeconds()
                 .value();
 

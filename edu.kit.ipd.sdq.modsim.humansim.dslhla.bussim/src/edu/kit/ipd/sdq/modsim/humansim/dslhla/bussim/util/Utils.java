@@ -13,10 +13,19 @@ public class Utils {
     public static void log(AbstractSimEntityDelegator entity, String msg) {
         StringBuilder s = new StringBuilder();
         s.append("[" + entity.getName() + "] ");
-//        s.append("(t=" + entity.getModel().getSimulationControl().getCurrentSimulationTime() + ") ");
-        s.append("(t=" + ((BusModel)entity.getModel()).getComponent().getCurrentFedTime() + ") ");
+        s.append("(tFed=" + ((BusModel)entity.getModel()).getComponent().getCurrentFedTime() + ") ");
+        s.append("(tSim=" + entity.getModel().getSimulationControl().getCurrentSimulationTime() + ")");
         s.append(msg);
         LOGGER.info(s.toString());
+    }
+    
+    public static void cmdLog(AbstractSimEntityDelegator entity, String msg){
+        StringBuilder s = new StringBuilder();
+        s.append("[" + entity.getName() + "] ");
+        s.append("(tFed=" + ((BusModel)entity.getModel()).getComponent().getCurrentFedTime() + ") ");
+        s.append("(tSim=" + entity.getModel().getSimulationControl().getCurrentSimulationTime() + ")");
+        s.append(msg);
+        System.out.println(s.toString());
     }
 
 }

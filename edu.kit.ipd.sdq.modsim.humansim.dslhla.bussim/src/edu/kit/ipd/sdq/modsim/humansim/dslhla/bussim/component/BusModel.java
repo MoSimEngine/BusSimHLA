@@ -98,9 +98,7 @@ public class BusModel extends AbstractSimulationModel{
 //			 	
 //			 	
 //		        System.out.println("-----------------------------");
-//		}
-	
-	       	
+//		}       	
 	}
 
     /**
@@ -131,13 +129,7 @@ public class BusModel extends AbstractSimulationModel{
 	            new BusProcess(bus).scheduleAt(component.getCurrentFedTime());
 	        } else { // event-oriented
 	            // schedule intitial event for the bus
-	            LoadPassengersEvent e = new LoadPassengersEvent(this, "Load Passengers");
-	            component.synchronisedAdvancedTime(0.0, e, bus);
-	            
-
-	            
-	            
-	            //new PassengerArrivalEvent(Duration.seconds(2.0), this, "BS").schedule(stop1, 0);
+	            new LoadPassengersEvent(this, "Load Passengers").schedule(bus, component.getCurrentFedTime());
 	        }
 	}
 
@@ -165,20 +157,47 @@ public class BusModel extends AbstractSimulationModel{
 		this.component = component;
 	}
 	
-	public boolean registerHumanAtBusStop(String humanName, String busStop){
+	public boolean registerHumanAtBusStop(String humanName, String busStop, String destination){
+
+		boolean foundCurrentBS = false;
+		boolean setDestination = false;
 		
 		for (Human humanBS : getHumans()) {
 			if(humanBS.getName().equals(humanName)){
-				//this.log("Human Found while register");
-				for(int i = 0; i < getStops().length; i++){
-					if(getStops()[i].getName().equals(busStop.toString())){
-						
-						getStops()[i].setPassenger(humanBS);
-						//log("Register Action  with HumanName:" + register.getName() + " for BusStop " + simulation.getStops()[i].getName());
+				for (BusStop bs : getStops()) {
+					
+					if(bs.getName().equals(busStop)){
+						bs.setPassenger(humanBS);
 						//Utils.log(simulation.getBus "Bus is in State:" + bus.getState().toString());
+						foundCurrentBS = true;
+						//System.out.println("[" + component.getCurrentFedTime() + "]" + "Registered Human: " + humanBS.getName() + " at: " + bs.getName());
+					}
+					
+					if(bs.getName().equals(destination)){
+						humanBS.setDestination(bs);
+						setDestination = true;
+						//System.out.println("[" + component.getCurrentFedTime() + "]" + "Registered Human: " + humanBS.getName() + " for " + bs.getName());
+					}
+					
+					if(foundCurrentBS && setDestination){
 						return true;
 					}
-				}
+				}	
+			}
+		}
+		return false;
+	}
+	
+	public boolean unregisterHumanAtBusStop(String humanName, String busStop){
+	
+		for (Human humanBS : getHumans()) {
+			if(humanBS.getName().equals(humanName)){
+				for (BusStop bs : getStops()) {
+					if(bs.getName().equals(busStop)){
+						bs.removePassenger(humanBS);
+						return true;
+					}
+				}	
 			}
 		}
 		return false;

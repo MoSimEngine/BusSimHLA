@@ -37,8 +37,6 @@ public class UnloadPassengersEvent extends AbstractSimEventDelegator<Bus> {
         	if(h.getDestination().equals(bus.getPosition())){
         		Utils.log(bus, "Unloading " + h.getName() + " at position " + position.getName());
 
-        		
-        		
         		if(HumanSimValues.USE_SPIN_WAIT){
 	        		try {
 						m.getComponent().modifyHumanCollected(h, false, unloadingTime);
@@ -60,11 +58,8 @@ public class UnloadPassengersEvent extends AbstractSimEventDelegator<Bus> {
 //	        		Utils.log(bus, "Unloading " + h.getName() + " at position + " + position.getName());
     			} else {
     				bus.transportHuman(h);
-    				}
-        }
-        
-       
-        
+    			}
+        	}
         
         UnloadingFinishedEvent e = new UnloadingFinishedEvent(totalUnloadingTime, this.getModel(), "Unload Finished");
 //        e.schedule(bus, totalUnloadingTime);

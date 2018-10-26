@@ -21,7 +21,7 @@ public class BusFederateAmbassador extends NullFederateAmbassador{
 	private BusFederate federate;
 	
 	protected double federateTime = 0.0;
-	protected double federateLookahead = 0.0;
+	protected double federateLookahead = 1.0;
 
 	protected boolean isRegulating = false;
 	protected boolean isConstrained = false;
@@ -83,13 +83,6 @@ public class BusFederateAmbassador extends NullFederateAmbassador{
 	@Override
 	public void discoverObjectInstance(ObjectInstanceHandle theObject, ObjectClassHandle theObjectClass,
 			String objectName) throws FederateInternalError {
-		//federate.log("Discoverd Object: handle=" + theObject + ", classHandle=" + theObjectClass + ", name=" + objectName);
-		
-//		if(theObjectClass.equals(federate.humanObjectClassHandle)){
-//			federate.handleDiscoveredHuman(theObject, theObjectClass, objectName);
-//		}
-		
-		
 	}
 
 	@Override
@@ -122,12 +115,17 @@ public class BusFederateAmbassador extends NullFederateAmbassador{
 	public void receiveInteraction(InteractionClassHandle interactionClass, ParameterHandleValueMap theParameters,
 			byte[] tag, OrderType sentOrdering, TransportationTypeHandle theTransport, LogicalTime time,
 			OrderType receivedOrdering, SupplementalReceiveInfo receiveInfo) throws FederateInternalError {
-
 		
 		if(interactionClass.equals(federate.registerAtBusStopHandle)){
-			decodeRegisterInteraction(theParameters);
-		} else if (interactionClass.equals(federate.humanReadyHandle)){
 			
+			// calling Handling Fuction with AdapterUse
+			federate.handleRegistration(federate.adapterService.filter(String.class.getTypeName(), theParameters.get(federate.humanNameRegisterHandle)), 
+					federate.adapterService.filter(String.class.getTypeName(), theParameters.get(federate.busStopNameRegisterHandle)),
+					federate.adapterService.filter(String.class.getTypeName(), theParameters.get(federate.destinationNameRegisterHandle)));
+		} else if (interactionClass.equals(federate.unregisterAtBusStopHandle))  {
+			
+			federate.handleUnregistration(federate.adapterService.filter(String.class.getTypeName(), theParameters.get(federate.humanNameUnregisterHandle)), 
+					federate.adapterService.filter(String.class.getTypeName(), theParameters.get(federate.busStopNameUnregisterHandle)));
 		} else {
 			federate.log("Interaction not handled");
 		}
@@ -139,46 +137,4 @@ public class BusFederateAmbassador extends NullFederateAmbassador{
 			SupplementalRemoveInfo removeInfo) throws FederateInternalError {
 		federate.log("Object Removed: handle=" + theObject);
 	}
-	
-	
-
-	
-	private void decodeRegisterInteraction(ParameterHandleValueMap map){
-		HLAASCIIstring humanName = federate.encoderFactory.createHLAASCIIstring();
-		HLAASCIIstring busStop = federate.encoderFactory.createHLAASCIIstring();
-		
-		try{
-			humanName.decode(map.get(federate.humanNameRegisterHandle));
-			busStop.decode(map.get(federate.busStopNameRegisterHandle));
-		} catch(DecoderException de){
-			de.printStackTrace();
-			return;
-		}
-		
-		//federate.log("Received bus stop registration from: " + humanName.getValue() + "at BusStop: " + busStop.getValue());
-		
-		federate.handleRegistration(federate.adapterService.filter(String.class.getTypeName(), map.get(federate.humanNameRegisterHandle)), 
-				federate.adapterService.filter(String.class.getTypeName(), map.get(federate.busStopNameRegisterHandle)));
-	}
-	
-	public String decodeStringValues(byte[] bytes){
-	
-		HLAASCIIstring value = federate.encoderFactory.createHLAASCIIstring();
-		
-		
-		try
-		{
-			value.decode( bytes );
-			return value.getValue();
-		}
-		catch( DecoderException de )
-		{
-			de.printStackTrace();
-			return "";
-		}
-		
-	}
-	
-	
-
 }

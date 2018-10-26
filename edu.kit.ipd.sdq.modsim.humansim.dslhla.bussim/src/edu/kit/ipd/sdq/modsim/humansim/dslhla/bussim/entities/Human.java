@@ -18,6 +18,8 @@ public class Human extends AbstractSimEntityDelegator {
 	private ObjectClassHandle och;
 
 	private boolean initialised;
+	
+	private double drivingTime = 0;
 
 	
 	
@@ -91,5 +93,13 @@ public class Human extends AbstractSimEntityDelegator {
 
 		public void setOih(ObjectInstanceHandle oih) {
 			this.oih = oih;
+		}
+		
+		public void driveOn(double time){
+			drivingTime += time;
+		}
+		
+		public double unload(){
+			return drivingTime;
 		}
 }

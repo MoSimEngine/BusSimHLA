@@ -55,8 +55,9 @@ public class LoadPassengersEvent extends AbstractSimEventDelegator<Bus> {
     			}
         	} else {
         		try {
-        			System.out.println();
-					m.getComponent().sendHumanExitsInteraction(h, position, loadingTime);
+        			//System.out.println();
+					m.getComponent().sendHumanEnterInteraction
+					(h, position, loadingTime);
 				} catch (RTIexception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

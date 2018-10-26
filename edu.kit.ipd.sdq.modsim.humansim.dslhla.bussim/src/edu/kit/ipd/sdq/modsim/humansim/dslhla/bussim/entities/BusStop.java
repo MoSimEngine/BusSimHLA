@@ -28,6 +28,10 @@ public class BusStop extends AbstractSimEntityDelegator {
     	passengers.add(human);
     }
     
+    public synchronized void removePassenger(Human human){
+    	passengers.remove(human);
+    }
+    
     public synchronized Human getPassenger(){
     	return passengers.remove();
     }
