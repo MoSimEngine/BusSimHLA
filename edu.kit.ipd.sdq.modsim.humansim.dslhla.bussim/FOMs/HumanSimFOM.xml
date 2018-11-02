@@ -110,6 +110,19 @@
                     <semantics>Destination of human</semantics>
                 </attribute>
 
+                <attribute>
+                   <name>Movementtype</name>
+                    <dataType>HLAASCIIstring</dataType>
+                    <updateType>Static</updateType>
+                    <updateCondition>NA</updateCondition>
+                    <ownership>DivestAcquire</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <dimensions/>
+                    <transportation>HLAreliable</transportation>
+                    <order>TimeStamp</order>
+                    <semantics>Destination of human</semantics>
+                </attribute>
+
             </objectClass>
             <objectClass>
              <name>BusStop</name>

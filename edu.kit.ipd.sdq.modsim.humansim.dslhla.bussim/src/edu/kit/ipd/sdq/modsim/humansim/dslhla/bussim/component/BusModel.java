@@ -11,14 +11,12 @@ import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.entities.Bus;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.entities.BusStop;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.entities.Human;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.events.LoadPassengersEvent;
-import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.processes.BusProcess;
+import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.util.Utils;
 
 
 
 public class BusModel extends AbstractSimulationModel{
 
-	 private boolean PROCESS_ORIENTED = false;
-	 
 	 private BusStop stop1;
 	 private BusStop stop2;
 	 private BusStop stop3;
@@ -69,13 +67,7 @@ public class BusModel extends AbstractSimulationModel{
 	public void finalise() {
 		
 	
-	 	
-		try {
-			component.cleanFederate();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	 
 		 
 		
 		System.out.println("Closed Fed");
@@ -99,6 +91,14 @@ public class BusModel extends AbstractSimulationModel{
 //			 	
 //		        System.out.println("-----------------------------");
 //		}       	
+		
+		
+		try {
+			component.cleanFederate();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
     /**
@@ -124,13 +124,8 @@ public class BusModel extends AbstractSimulationModel{
 	public void startSimulation(){
 		
 		System.out.println("Start bus at " + component.getCurrentFedTime());
-	     if (PROCESS_ORIENTED) {
-	            // schedule a process for each bus
-	            new BusProcess(bus).scheduleAt(component.getCurrentFedTime());
-	        } else { // event-oriented
-	            // schedule intitial event for the bus
+	
 	            new LoadPassengersEvent(this, "Load Passengers").schedule(bus, component.getCurrentFedTime());
-	        }
 	}
 
 	public BusStop[] getStops() {
@@ -168,6 +163,7 @@ public class BusModel extends AbstractSimulationModel{
 					
 					if(bs.getName().equals(busStop)){
 						bs.setPassenger(humanBS);
+//						Utils.log(humanBS, "Handle HumanRegister-Event on " + component.getCurrentFedTime());
 						//Utils.log(simulation.getBus "Bus is in State:" + bus.getState().toString());
 						foundCurrentBS = true;
 						//System.out.println("[" + component.getCurrentFedTime() + "]" + "Registered Human: " + humanBS.getName() + " at: " + bs.getName());
@@ -194,6 +190,7 @@ public class BusModel extends AbstractSimulationModel{
 			if(humanBS.getName().equals(humanName)){
 				for (BusStop bs : getStops()) {
 					if(bs.getName().equals(busStop)){
+//						Utils.log(humanBS, "Handle HumanUnRegister-Event on " + component.getCurrentFedTime());
 						bs.removePassenger(humanBS);
 						return true;
 					}

@@ -35,7 +35,7 @@ public class UnloadPassengersEvent extends AbstractSimEventDelegator<Bus> {
         for(int i = 0; i < numTransportedHumanSize; i++){
         	Human h = bus.unloadHuman();
         	if(h.getDestination().equals(bus.getPosition())){
-        		Utils.log(bus, "Unloading " + h.getName() + " at position " + position.getName());
+        		//Utils.log(bus, "Unloading " + h.getName() + " at position " + position.getName());
 
         		if(HumanSimValues.USE_SPIN_WAIT){
 	        		try {
@@ -55,16 +55,20 @@ public class UnloadPassengersEvent extends AbstractSimEventDelegator<Bus> {
 	        		//getFederate().sendHumanExitsInteraction(h, position, unloadingTime);
 	        		h.setCollected(false);
 	        		totalUnloadingTime += unloadingTime;
-//	        		Utils.log(bus, "Unloading " + h.getName() + " at position + " + position.getName());
+	        		Utils.log(bus, "Unloading " + h.getName() + " at position " + position.getName(), true);
     			} else {
     				bus.transportHuman(h);
     			}
         	}
         
         UnloadingFinishedEvent e = new UnloadingFinishedEvent(totalUnloadingTime, this.getModel(), "Unload Finished");
-//        e.schedule(bus, totalUnloadingTime);
-        m.getComponent().synchronisedAdvancedTime(totalUnloadingTime, e, bus);
-
+//        
+        
+        if(HumanSimValues.FULL_SYNC) {
+        	m.getComponent().synchronisedAdvancedTime(totalUnloadingTime, e, bus);
+        } else {
+        	m.getComponent().synchronisedAdvancedTime(totalUnloadingTime, e, bus);
+        }
     
     }
 }

@@ -76,9 +76,13 @@ public class LoadPassengersEvent extends AbstractSimEventDelegator<Bus> {
 
         // schedule load finished event
         LoadFinishedEvent e = new LoadFinishedEvent(totalLoadingTime, remainingPassengers, this.getModel(), "LoadFinished");
-        //e.schedule(bus, totalLoadingTime);
-        m.getComponent().synchronisedAdvancedTime(totalLoadingTime, e, bus);
-        
+        //
+       
+        if(HumanSimValues.FULL_SYNC) {
+        	 m.getComponent().synchronisedAdvancedTime(totalLoadingTime, e, bus);
+        } else {
+        	e.schedule(bus, totalLoadingTime);
+        }
         
     }
 

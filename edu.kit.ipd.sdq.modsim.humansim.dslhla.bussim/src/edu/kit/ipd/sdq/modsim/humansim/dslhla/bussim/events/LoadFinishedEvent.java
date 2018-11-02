@@ -3,6 +3,7 @@ package edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.events;
 import de.uka.ipd.sdq.simulation.abstractsimengine.AbstractSimEventDelegator;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationModel;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component.BusModel;
+import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component.HumanSimValues;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.entities.Bus;
 
 
@@ -31,8 +32,13 @@ public class LoadFinishedEvent extends AbstractSimEventDelegator<Bus> {
       
        
         TravelEvent e = new TravelEvent(this.getModel(), "Travel");
-//        e.schedule(bus, 0);
-        m.getComponent().synchronisedAdvancedTime(0, e, bus);
+//       
+        if(HumanSimValues.FULL_SYNC) {
+        	 m.getComponent().synchronisedAdvancedTime(0, e, bus);
+        } else {
+        	 e.schedule(bus, 0);
+        }
+       
     }
 
 }
