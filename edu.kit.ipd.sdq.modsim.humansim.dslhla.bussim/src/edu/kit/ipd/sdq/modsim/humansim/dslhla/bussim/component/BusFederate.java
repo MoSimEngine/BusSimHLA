@@ -93,7 +93,7 @@ public class BusFederate {
 	private String federateName;
 	
 	private boolean regulateTime = true;
-	private boolean constrainTime = false;
+	private boolean constrainTime = true;
 	
 	double startTime;
 	private BusModel simulation;
@@ -352,13 +352,14 @@ public class BusFederate {
 	public synchronized boolean advanceTime( double timestep ) throws RTIexception
 	{
 		double advancingTo = 0;
-		double miniStep = 0.000000001;
+//		double miniStep = 0.000000001;
 		boolean belowTime = true;
 		if(fedamb.federateTime + timestep <= HumanSimValues.MAX_SIM_TIME.toSeconds().value()){
 			advancingTo = fedamb.federateTime + timestep;
 		} else {
-			advancingTo =  HumanSimValues.MAX_SIM_TIME.toSeconds().value() + miniStep;
-			belowTime = false;
+//			advancingTo =  HumanSimValues.MAX_SIM_TIME.toSeconds().value() + miniStep;
+			return false;
+			//belowTime = false;
 		}
 		
 		// request the advance
@@ -433,7 +434,7 @@ public class BusFederate {
 		} else {
 			time = timeFactory.makeTime(simulation.getSimulationControl().getCurrentSimulationTime() + loadingTime);
 		}
-		Utils.log(human, "Registers Enters-Event on " + fedamb.federateTime + " for time: " + time.getValue() );
+//		Utils.log(human, "Registers Enters-Event on " + fedamb.federateTime + " for time: " + time.getValue() );
 		rtiamb.sendInteraction( humanEntersBusHandle, parameters, generateTag(), time);
 		//Utils.log(simulation.getBus(), "Send Enters Interaction for Human"+ human.getName() + " at busstop " + busStop.getName() + " with handle:" + humanEntersBusHandle);
 	}
@@ -452,7 +453,7 @@ public class BusFederate {
 			time = timeFactory.makeTime(simulation.getSimulationControl().getCurrentSimulationTime() + unloadingTime);
 		}
 		
-		Utils.log(human, "Registers Exits-Event on " + fedamb.federateTime + " for time: " + time.getValue() );
+//		Utils.log(human, "Registers Exits-Event on " + fedamb.federateTime + " for time: " + time.getValue() );
 		rtiamb.sendInteraction( humanExitsBusHandle, parameters, generateTag(), time);
 		//Utils.log(simulation.getBus(), "Send Exit Interaction for Human"+ human.getName() + " at busstop " + busStop.getName() + " with handle:" + humanExitsBusHandle);
 	}

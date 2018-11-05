@@ -52,7 +52,7 @@ public class BusModel extends AbstractSimulationModel{
 	        lineOne.addSegment(stop3, stop1, 30, 50);
 
 	        // define buses
-	        bus = new Bus(40, stop1, lineOne, this, "Bus 1");
+	        bus = new Bus(20, stop1, lineOne, this, "Bus 1");
 	   
 	       
 	        
