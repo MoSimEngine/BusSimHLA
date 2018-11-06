@@ -24,15 +24,11 @@ public class UnloadingFinishedEvent extends AbstractSimEventDelegator<Bus> {
 //    	if(unloadingTime > 0.0){
 //    	Utils.log(bus, "Unloading finished. Took " + this.unloadingTime + " seconds.");
 //    	}
+    	
         // schedule load passengers event
         LoadPassengersEvent e = new LoadPassengersEvent(this.getModel(), "Load Passengers");
-        //
-        
-        if(HumanSimValues.FULL_SYNC) {
-        	m.getComponent().synchronisedAdvancedTime(0, e, bus);
-        } else {
-        	e.schedule(bus, 0);
-        }
+        e.schedule(bus, 0);
+  
     }
 
 }

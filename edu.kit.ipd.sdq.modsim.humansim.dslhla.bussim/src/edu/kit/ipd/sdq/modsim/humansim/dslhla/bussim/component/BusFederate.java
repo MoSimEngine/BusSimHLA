@@ -5,9 +5,6 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.LinkedList;
-
-import org.portico.impl.hla1516e.Rti1516eAmbassador;
 
 import de.uka.ipd.sdq.simulation.abstractsimengine.AbstractSimEntityDelegator;
 import de.uka.ipd.sdq.simulation.abstractsimengine.AbstractSimEventDelegator;
@@ -26,9 +23,6 @@ import hla.rti1516e.AttributeHandleSet;
 import hla.rti1516e.AttributeHandleValueMap;
 import hla.rti1516e.CallbackModel;
 import hla.rti1516e.InteractionClassHandle;
-import hla.rti1516e.LogicalTime;
-import hla.rti1516e.LogicalTimeFactory;
-import hla.rti1516e.LogicalTimeInterval;
 import hla.rti1516e.ObjectClassHandle;
 import hla.rti1516e.ObjectInstanceHandle;
 import hla.rti1516e.ParameterHandle;
@@ -46,7 +40,6 @@ import hla.rti1516e.exceptions.RTIexception;
 import hla.rti1516e.time.HLAfloat64Interval;
 import hla.rti1516e.time.HLAfloat64Time;
 import hla.rti1516e.time.HLAfloat64TimeFactory;
-import hla.rti1516e.time.HLAinteger64Time;
 
 public class BusFederate {
 
@@ -87,8 +80,6 @@ public class BusFederate {
 
 	public int readyCounter = 0;
 	
-	
-
 	private final String fedInfoStr =  "!BusSim Federate-Info!: ";
 	private String federateName;
 	
@@ -97,8 +88,6 @@ public class BusFederate {
 	
 	double startTime;
 	private BusModel simulation;
-
-	
 	public HLAAdapter adapterService;
 	 
 	public BusFederate(BusModel simulation){
@@ -109,35 +98,33 @@ public class BusFederate {
 		
 		
 		this.federateName = fedName;
-		log(fedInfoStr + "Creating RTIambassador");
+		Utils.log(fedInfoStr + "Creating RTIambassador");
 		rtiamb = RtiFactoryFactory.getRtiFactory().getRtiAmbassador();
 		encoderFactory = RtiFactoryFactory.getRtiFactory().getEncoderFactory();
 
-		log(fedInfoStr + "Connecting");
+		Utils.log(fedInfoStr + "Connecting");
 		fedamb = new BusFederateAmbassador(this);
-		if(HumanSimValues.EVOKE){
-			rtiamb.connect(fedamb, CallbackModel.HLA_EVOKED);
-			} else {
-				rtiamb.connect(fedamb, CallbackModel.HLA_IMMEDIATE);
-			}
-		log(fedInfoStr + "Creating Federation");
+
+		rtiamb.connect(fedamb, CallbackModel.HLA_EVOKED);
+
+		Utils.log(fedInfoStr + "Creating Federation");
 		
 		try {			
 			URL[] modules = new URL[] { (new File("FOMS/HumanSimFOM.xml")).toURI().toURL() };
 
 			rtiamb.createFederationExecution("HumanSim1", modules);
-			log(fedInfoStr + "Created Federation");
+			Utils.log(fedInfoStr + "Created Federation");
 		} catch (FederationExecutionAlreadyExists exists) {
-			log(fedInfoStr + "Didn't create federation, it already existed");
+			Utils.log(fedInfoStr + "Didn't create federation, it already existed");
 		} catch (MalformedURLException urle) {
-			log(fedInfoStr + "Exception loading one of the FOM modules from disk: " + urle.getMessage());
+			Utils.log(fedInfoStr + "Exception loading one of the FOM modules from disk: " + urle.getMessage());
 			urle.printStackTrace();
 			return;
 		}
 		
 		URL[] joinModules = new URL[] { (new File("FOMS/HumanSimFOM.xml")).toURI().toURL() };
 		rtiamb.joinFederationExecution(federateName, "HumanSim1", "HumanSim1", joinModules);
-		log(fedInfoStr + "Joined fedration as " + federateName);
+		Utils.log(fedInfoStr + "Joined fedration as " + federateName);
 		
 
 		this.timeFactory = (HLAfloat64TimeFactory) rtiamb.getTimeFactory();
@@ -152,7 +139,7 @@ public class BusFederate {
 		
 		waitForUser();
 		rtiamb.synchronizationPointAchieved(HumanSimValues.READY_TO_RUN);
-		log(fedInfoStr + "Achieved sync point: " + HumanSimValues.READY_TO_RUN + ", waiting for federation...");
+		Utils.log(fedInfoStr + "Achieved sync point: " + HumanSimValues.READY_TO_RUN + ", waiting for federation...");
 
 		//Define if federation time is constrained by others or regulates time for others
 		constrainTime = true;
@@ -170,16 +157,12 @@ public class BusFederate {
         initialiseBusStops();
 	
 		while(simulation.getHumans().size() != HumanSimValues.NUM_HUMANS){
-			if(HumanSimValues.EVOKE){
 				advanceTime(1.0);
 				rtiamb.evokeMultipleCallbacks(0.1, 0.2);
-			} else {
-			System.out.print("");
-			}
 		}
 
 		for (Human h : simulation.getHumans()) {
-			log("Human: " + h.getName() + " : " + h.getMovementType());
+			Utils.log("Human: " + h.getName() + " : " + h.getMovementType());
 		}
 		System.out.println("Total # Humans:" + simulation.getHumans().size());
 		
@@ -215,7 +198,6 @@ public class BusFederate {
 		while (fedamb.isRegulating == false) {
 			rtiamb.evokeMultipleCallbacks(0.1, 0.2);
 			}
-		//log(fedInfoStr + "activated time regulation");
 		}
 		
 		if(constrainTime){
@@ -224,10 +206,9 @@ public class BusFederate {
 		while (fedamb.isConstrained == false) {
 			rtiamb.evokeMultipleCallbacks(0.1, 0.2);
 			}
-		//log(fedInfoStr + "activated time contrained");
 		}
 		
-		log(fedInfoStr + "Time Policy Enabled");
+		Utils.log(fedInfoStr + "Time Policy Enabled");
 	}
 	
 	private void runTimePolicyEnabling() throws Exception{
@@ -237,7 +218,7 @@ public class BusFederate {
 				try{
 					enableTimePolicy();
 					} catch (Exception e){
-						log(e.getMessage());
+						Utils.log(e.getMessage());
 					}
 				}
 		} else if (regulateTime){
@@ -245,7 +226,7 @@ public class BusFederate {
 				try{
 					enableTimePolicy();
 					} catch (Exception e){
-						log(e.getMessage());
+						Utils.log(e.getMessage());
 					}
 				}
 		} else if (constrainTime){
@@ -253,11 +234,11 @@ public class BusFederate {
 				try{
 					enableTimePolicy();
 					} catch (Exception e){
-						log(e.getMessage());
+						Utils.log(e.getMessage());
 					}
 				}
 		} else {
-			log("No time policy to enable");
+			Utils.log("No time policy to enable");
 		}
 		
 		
@@ -310,7 +291,7 @@ public class BusFederate {
 		busStopAttributes.add(busStopNameAttributeHandle);
 		rtiamb.publishObjectClassAttributes(busStopObjectClassHandle, busStopAttributes);
 		
-		log(fedInfoStr + "Published and Subscribed");
+		Utils.log(fedInfoStr + "Published and Subscribed");
 	}
 	
 	private ObjectInstanceHandle registerBusStopObject() throws RTIexception{
@@ -352,36 +333,23 @@ public class BusFederate {
 	public synchronized boolean advanceTime( double timestep ) throws RTIexception
 	{
 		double advancingTo = 0;
-//		double miniStep = 0.000000001;
 		boolean belowTime = true;
 		if(fedamb.federateTime + timestep <= HumanSimValues.MAX_SIM_TIME.toSeconds().value()){
 			advancingTo = fedamb.federateTime + timestep;
 		} else {
-//			advancingTo =  HumanSimValues.MAX_SIM_TIME.toSeconds().value() + miniStep;
 			return false;
-			//belowTime = false;
 		}
 		
 		// request the advance
 		fedamb.isAdvancing = true;
 		HLAfloat64Time time = timeFactory.makeTime( advancingTo );
 		
-		if(HumanSimValues.MESSAGE){
-			try{
-				rtiamb.nextMessageRequest( time );
-			} catch (Exception e){
-				log(e.getMessage());
-				return false;
-			}
-		} else {
 			try{
 				rtiamb.timeAdvanceRequest( time );
 				} catch (Exception e){
-					log(e.getMessage());
+					Utils.log(e.getMessage());
 					return false;
 				}
-		}
-		
 		
 		
 		// wait for the time advance to be granted. ticking will tell the
@@ -413,7 +381,6 @@ public class BusFederate {
 					return;
 				}
 			} catch (RTIexception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -428,15 +395,8 @@ public class BusFederate {
 		HLAASCIIstring busStopName = encoderFactory.createHLAASCIIstring(busStop.getName());
 		parameters.put(humanNameEnterBusHandle, humanName.toByteArray());
 		parameters.put(busStopNameEnterHandle, busStopName.toByteArray());
-		HLAfloat64Time time;
-		if(HumanSimValues.FULL_SYNC) {
-			time = timeFactory.makeTime(fedamb.federateTime + loadingTime);
-		} else {
-			time = timeFactory.makeTime(simulation.getSimulationControl().getCurrentSimulationTime() + loadingTime);
-		}
-//		Utils.log(human, "Registers Enters-Event on " + fedamb.federateTime + " for time: " + time.getValue() );
+		HLAfloat64Time time = timeFactory.makeTime(simulation.getSimulationControl().getCurrentSimulationTime() + loadingTime);
 		rtiamb.sendInteraction( humanEntersBusHandle, parameters, generateTag(), time);
-		//Utils.log(simulation.getBus(), "Send Enters Interaction for Human"+ human.getName() + " at busstop " + busStop.getName() + " with handle:" + humanEntersBusHandle);
 	}
 	
 
@@ -446,16 +406,8 @@ public class BusFederate {
 		HLAASCIIstring busStopName = encoderFactory.createHLAASCIIstring(busStop.getName());
 		parameters.put(humanNameExitBusHandle, humanName.toByteArray());
 		parameters.put(busStopNameExitHandle, busStopName.toByteArray());
-		HLAfloat64Time time;
-		if(HumanSimValues.FULL_SYNC) {
-			time = timeFactory.makeTime(fedamb.federateTime + unloadingTime);
-		} else {
-			time = timeFactory.makeTime(simulation.getSimulationControl().getCurrentSimulationTime() + unloadingTime);
-		}
-		
-//		Utils.log(human, "Registers Exits-Event on " + fedamb.federateTime + " for time: " + time.getValue() );
+		HLAfloat64Time time = timeFactory.makeTime(simulation.getSimulationControl().getCurrentSimulationTime() + unloadingTime);
 		rtiamb.sendInteraction( humanExitsBusHandle, parameters, generateTag(), time);
-		//Utils.log(simulation.getBus(), "Send Exit Interaction for Human"+ human.getName() + " at busstop " + busStop.getName() + " with handle:" + humanExitsBusHandle);
 	}
 	
 	
@@ -473,14 +425,8 @@ public class BusFederate {
 		HLAinteger32BE collectedValue = encoderFactory.createHLAinteger32BE(boolValue);
 		attributes.put(collectedHandle, collectedValue.toByteArray());
 		
-		HLAfloat64Time time;
-		if(HumanSimValues.FULL_SYNC) {
-			time = timeFactory.makeTime(fedamb.federateTime + additionalTime);
-		} else {
-			time = timeFactory.makeTime(simulation.getSimulationControl().getCurrentSimulationTime() + additionalTime);
-		}
-
-//		Utils.log(human, "Change collected to " + collected + " on " + fedamb.federateTime + " for time: " + time.getValue() );
+		HLAfloat64Time time = timeFactory.makeTime(simulation.getSimulationControl().getCurrentSimulationTime() + additionalTime);
+		
 		try{
 		rtiamb.updateAttributeValues(human.getOih(), attributes, generateTag(), time);
 		} catch (Exception e){
@@ -494,6 +440,7 @@ public class BusFederate {
 		handles.add(collectedHandle);
 		rtiamb.attributeOwnershipAcquisition(human.getOih(), handles, generateTag());
 	}
+	
 	public double getCurrentFedTime(){
 		return fedamb.federateTime;
 	}
@@ -504,13 +451,7 @@ public class BusFederate {
 		else
 			return false;
 	}
-	
-	public void log(String msg){
-		 StringBuilder s = new StringBuilder();
-    	 s.append(msg);
-    	 System.out.println(s);
-	}
-	
+
 	public void handleRegistration(String humanName, String busStop, String destination){
 		simulation.registerHumanAtBusStop(humanName, busStop, destination);
 	}
@@ -536,7 +477,7 @@ public class BusFederate {
 				movementType = (String)adapterService.filter(String.class.getTypeName(), attributes.get(movementTypeHandle));
 			}
 			else {
-				log("Got more Attributes than expected");
+				Utils.log("Got more Attributes than expected");
 			}
 		}
 
@@ -598,12 +539,12 @@ public class BusFederate {
 	
 
 	public void waitForUser() {
-		log(" >>>>>>>>>> Press Enter to Continue <<<<<<<<<<");
+		Utils.log(" >>>>>>>>>> Press Enter to Continue <<<<<<<<<<");
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		try {
 			reader.readLine();
 		} catch (Exception e) {
-			log("Error while waiting for user input: " + e.getMessage());
+			Utils.log("Error while waiting for user input: " + e.getMessage());
 			e.printStackTrace();
 		}
 	}

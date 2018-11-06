@@ -33,4 +33,16 @@ public class Utils {
     public static void log(AbstractSimEntityDelegator entity, String msg) {
     	Utils.log(entity, msg, true);
     }
+    
+    public static void log(String msg, boolean cmd) {
+   	 if(cmd)
+        	System.out.println(msg);
+        else 
+        	LOGGER.info(msg);
+   }
+   
+
+   public static void log(String msg) {
+   	log(msg, true);
+   }
 }

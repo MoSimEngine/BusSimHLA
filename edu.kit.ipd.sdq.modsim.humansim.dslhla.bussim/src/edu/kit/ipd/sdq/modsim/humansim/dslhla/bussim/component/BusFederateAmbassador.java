@@ -1,4 +1,5 @@
 package  edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component;
+import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.util.Utils;
 import hla.rti1516e.AttributeHandleValueMap;
 import hla.rti1516e.FederateHandleSet;
 import hla.rti1516e.InteractionClassHandle;
@@ -40,24 +41,24 @@ public class BusFederateAmbassador extends NullFederateAmbassador{
 
 	@Override
 	public void synchronizationPointRegistrationFailed(String label, SynchronizationPointFailureReason reason) {
-		federate.log("Failed to register sync point: " + label + ", reason=" + reason);
+		Utils.log("Failed to register sync point: " + label + ", reason=" + reason);
 	}
 
 	@Override
 	public void synchronizationPointRegistrationSucceeded(String label) {
-		federate.log("Successfully registered sync point: " + label);
+		Utils.log("Successfully registered sync point: " + label);
 	}
 
 	@Override
 	public void announceSynchronizationPoint(String label, byte[] tag) {
-		federate.log("Synchronization point announced: " + label);
+		Utils.log("Synchronization point announced: " + label);
 		if (label.equals(HumanSimValues.READY_TO_RUN))
 			this.isAnnounced = true;
 	}
 
 	@Override
 	public void federationSynchronized(String label, FederateHandleSet failed) {
-		federate.log("Federation Synchronized: " + label);
+		Utils.log("Federation Synchronized: " + label);
 		if (label.equals(HumanSimValues.READY_TO_RUN))
 			this.isReadyToRun = true;
 	}
@@ -90,17 +91,13 @@ public class BusFederateAmbassador extends NullFederateAmbassador{
 			byte[] tag, OrderType sentOrder, TransportationTypeHandle transport, SupplementalReflectInfo reflectInfo)
 			throws FederateInternalError {
 		reflectAttributeValues(theObject, theAttributes, tag, sentOrder, transport, null, sentOrder, reflectInfo);
-		//System.out.println("Got Attributes");
 	}
 
 	@Override
 	public void reflectAttributeValues(ObjectInstanceHandle theObject, AttributeHandleValueMap theAttributes,
 			byte[] tag, OrderType sentOrdering, TransportationTypeHandle theTransport, LogicalTime time,
 			OrderType receivedOrdering, SupplementalReflectInfo reflectInfo) throws FederateInternalError {
-		//System.out.println("Got Attributes");
 			federate.handleHumanAttributeUpdates(theObject, theAttributes);
-		
-
 	}
 
 	@Override
@@ -117,8 +114,6 @@ public class BusFederateAmbassador extends NullFederateAmbassador{
 			OrderType receivedOrdering, SupplementalReceiveInfo receiveInfo) throws FederateInternalError {
 		
 		if(interactionClass.equals(federate.registerAtBusStopHandle)){
-			
-			// calling Handling Fuction with AdapterUse
 			federate.handleRegistration(federate.adapterService.filter(String.class.getTypeName(), theParameters.get(federate.humanNameRegisterHandle)), 
 					federate.adapterService.filter(String.class.getTypeName(), theParameters.get(federate.busStopNameRegisterHandle)),
 					federate.adapterService.filter(String.class.getTypeName(), theParameters.get(federate.destinationNameRegisterHandle)));
@@ -127,7 +122,7 @@ public class BusFederateAmbassador extends NullFederateAmbassador{
 			federate.handleUnregistration(federate.adapterService.filter(String.class.getTypeName(), theParameters.get(federate.humanNameUnregisterHandle)), 
 					federate.adapterService.filter(String.class.getTypeName(), theParameters.get(federate.busStopNameUnregisterHandle)));
 		} else {
-			federate.log("Interaction not handled");
+			Utils.log("Interaction not handled");
 		}
 		
 	}
@@ -135,6 +130,6 @@ public class BusFederateAmbassador extends NullFederateAmbassador{
 	@Override
 	public void removeObjectInstance(ObjectInstanceHandle theObject, byte[] tag, OrderType sentOrdering,
 			SupplementalRemoveInfo removeInfo) throws FederateInternalError {
-		federate.log("Object Removed: handle=" + theObject);
+		Utils.log("Object Removed: handle=" + theObject);
 	}
 }

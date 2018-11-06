@@ -24,21 +24,13 @@ public class TravelEvent extends AbstractSimEventDelegator<Bus> {
     	BusModel m = (BusModel)this.getModel();
         RouteSegment segment = bus.travel();
 
-//        Utils.log(bus, "Travelling to station " + segment.getTo(), true);
-        //System.out.println("RTITime:" + m.getComponent().getCurrentFedTime());
         double drivingTime = Duration.hours(segment.getDistance() / (double) segment.getAverageSpeed()).toSeconds()
                 .value();
-  
-//        System.out.println("DrivingTime" + drivingTime);
+        
         // wait for the bus to arrive at the next station^
         ArriveEvent e = new ArriveEvent(drivingTime, this.getModel(), "Arrive Event");
-        //
+        e.schedule(bus, drivingTime);
         
-        if(HumanSimValues.FULL_SYNC) {
-        	m.getComponent().synchronisedAdvancedTime(drivingTime, e, bus);
-        } else {
-        	e.schedule(bus, drivingTime);
-        }
     }
 
 }

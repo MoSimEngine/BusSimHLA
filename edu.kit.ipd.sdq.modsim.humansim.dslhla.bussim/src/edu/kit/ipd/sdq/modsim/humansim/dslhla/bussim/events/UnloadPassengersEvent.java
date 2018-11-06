@@ -23,9 +23,6 @@ public class UnloadPassengersEvent extends AbstractSimEventDelegator<Bus> {
     public void eventRoutine(Bus bus) {
     	BusModel m = (BusModel)this.getModel();
         BusStop position = bus.getPosition();
-        int occupiedSeats = bus.getOccupiedSeats();
-        LinkedList<Human> tmpHumans = new LinkedList<Human>();
-        //Utils.log(bus, "Unloading " + occupiedSeats + " passengers at station " + position + "...");
         bus.unload();
 
         // wait for the passengers to leave the bus
@@ -35,24 +32,15 @@ public class UnloadPassengersEvent extends AbstractSimEventDelegator<Bus> {
         for(int i = 0; i < numTransportedHumanSize; i++){
         	Human h = bus.unloadHuman();
         	if(h.getDestination().equals(bus.getPosition())){
-        		//Utils.log(bus, "Unloading " + h.getName() + " at position " + position.getName());
-
-        		if(HumanSimValues.USE_SPIN_WAIT){
-	        		try {
-						m.getComponent().modifyHumanCollected(h, false, unloadingTime);
-					} catch (RTIexception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-	        		}else {
+    
 	        			try {
 							m.getComponent().sendHumanExitsInteraction(h, position, unloadingTime);
 						} catch (RTIexception e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
-	        		}
-	        		//getFederate().sendHumanExitsInteraction(h, position, unloadingTime);
+	        		
+	        		
 	        		h.setCollected(false);
 	        		totalUnloadingTime += unloadingTime;
 	        		Utils.log(bus, "Unloading " + h.getName() + " at position " + position.getName(), true);
@@ -62,13 +50,8 @@ public class UnloadPassengersEvent extends AbstractSimEventDelegator<Bus> {
         	}
         
         UnloadingFinishedEvent e = new UnloadingFinishedEvent(totalUnloadingTime, this.getModel(), "Unload Finished");
-//        
+        m.getComponent().synchronisedAdvancedTime(totalUnloadingTime, e, bus);
         
-        if(HumanSimValues.FULL_SYNC) {
-        	m.getComponent().synchronisedAdvancedTime(totalUnloadingTime, e, bus);
-        } else {
-        	m.getComponent().synchronisedAdvancedTime(totalUnloadingTime, e, bus);
-        }
     
     }
 }

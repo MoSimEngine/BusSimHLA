@@ -32,12 +32,8 @@ public class LoadFinishedEvent extends AbstractSimEventDelegator<Bus> {
       
        
         TravelEvent e = new TravelEvent(this.getModel(), "Travel");
-//       
-        if(HumanSimValues.FULL_SYNC) {
-        	 m.getComponent().synchronisedAdvancedTime(0, e, bus);
-        } else {
-        	 e.schedule(bus, 0);
-        }
+        e.schedule(bus, 0);
+        
        
     }
 

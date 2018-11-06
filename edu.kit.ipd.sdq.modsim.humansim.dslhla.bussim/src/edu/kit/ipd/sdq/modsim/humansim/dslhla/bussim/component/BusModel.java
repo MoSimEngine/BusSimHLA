@@ -20,8 +20,7 @@ public class BusModel extends AbstractSimulationModel{
 	 private BusStop stop1;
 	 private BusStop stop2;
 	 private BusStop stop3;
-	 private Bus bus;
-	 private double startTime; 
+	 private Bus bus; 
 	 private BusStop[] stops;
 	 public int modelRun;
 	 public LinkedList<Double> durations;
@@ -37,7 +36,6 @@ public class BusModel extends AbstractSimulationModel{
 	
 	public void init() {
 		
-		startTime = System.nanoTime();
 		 // define bus stops
         stop1 = new BusStop(this, "Stop1");
         stop2 = new BusStop(this, "Stop2");
@@ -163,16 +161,12 @@ public class BusModel extends AbstractSimulationModel{
 					
 					if(bs.getName().equals(busStop)){
 						bs.setPassenger(humanBS);
-//						Utils.log(humanBS, "Handle HumanRegister-Event on " + component.getCurrentFedTime());
-						//Utils.log(simulation.getBus "Bus is in State:" + bus.getState().toString());
 						foundCurrentBS = true;
-						//System.out.println("[" + component.getCurrentFedTime() + "]" + "Registered Human: " + humanBS.getName() + " at: " + bs.getName());
 					}
 					
 					if(bs.getName().equals(destination)){
 						humanBS.setDestination(bs);
 						setDestination = true;
-						//System.out.println("[" + component.getCurrentFedTime() + "]" + "Registered Human: " + humanBS.getName() + " for " + bs.getName());
 					}
 					
 					if(foundCurrentBS && setDestination){
@@ -190,7 +184,6 @@ public class BusModel extends AbstractSimulationModel{
 			if(humanBS.getName().equals(humanName)){
 				for (BusStop bs : getStops()) {
 					if(bs.getName().equals(busStop)){
-//						Utils.log(humanBS, "Handle HumanUnRegister-Event on " + component.getCurrentFedTime());
 						bs.removePassenger(humanBS);
 						return true;
 					}
