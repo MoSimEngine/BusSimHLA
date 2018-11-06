@@ -1,5 +1,8 @@
 package edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.events;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+
 import de.uka.ipd.sdq.simulation.abstractsimengine.AbstractSimEventDelegator;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationModel;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component.BusModel;
@@ -25,7 +28,7 @@ public class TravelEvent extends AbstractSimEventDelegator<Bus> {
         //System.out.println("RTITime:" + m.getComponent().getCurrentFedTime());
         double drivingTime = Duration.hours(segment.getDistance() / (double) segment.getAverageSpeed()).toSeconds()
                 .value();
-
+  
 //        System.out.println("DrivingTime" + drivingTime);
         // wait for the bus to arrive at the next station^
         ArriveEvent e = new ArriveEvent(drivingTime, this.getModel(), "Arrive Event");

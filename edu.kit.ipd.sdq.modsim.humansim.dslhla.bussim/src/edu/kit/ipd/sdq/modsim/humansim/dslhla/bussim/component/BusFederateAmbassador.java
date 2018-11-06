@@ -21,7 +21,7 @@ public class BusFederateAmbassador extends NullFederateAmbassador{
 	private BusFederate federate;
 	
 	protected double federateTime = 0.0;
-	protected double federateLookahead = 1.0;
+	protected double federateLookahead = 0.0;
 
 	protected boolean isRegulating = false;
 	protected boolean isConstrained = false;
