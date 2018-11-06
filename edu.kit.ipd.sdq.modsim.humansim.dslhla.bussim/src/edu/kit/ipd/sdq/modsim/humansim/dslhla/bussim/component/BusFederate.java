@@ -166,12 +166,6 @@ public class BusFederate {
 		}
 		System.out.println("Total # Humans:" + simulation.getHumans().size());
 		
-
-		for (Human hu : simulation.getHumans()) {
-			if(!hu.getMovementType().equals("WALKING_DIRECTLY"))
-				sendCollectedAcquireRequest(hu);
-		}
-		
 		simulation.startSimulation();
 	}
 
@@ -189,6 +183,7 @@ public class BusFederate {
 			Utils.log(simulation.getBus(), "Federates still joined at HumanSim");
 		}
 	}
+	
 	private void enableTimePolicy() throws Exception {
 		
 		if(regulateTime){
@@ -410,46 +405,8 @@ public class BusFederate {
 		rtiamb.sendInteraction( humanExitsBusHandle, parameters, generateTag(), time);
 	}
 	
-	
-	public void modifyHumanCollected(Human human, boolean collected, double additionalTime) throws RTIexception{
-		AttributeHandleValueMap attributes = rtiamb.getAttributeHandleValueMapFactory().create(1);
-		
-		
-		int boolValue;
-		
-		if(collected)
-			boolValue = 101;
-		else 
-			boolValue = 102;
-		
-		HLAinteger32BE collectedValue = encoderFactory.createHLAinteger32BE(boolValue);
-		attributes.put(collectedHandle, collectedValue.toByteArray());
-		
-		HLAfloat64Time time = timeFactory.makeTime(simulation.getSimulationControl().getCurrentSimulationTime() + additionalTime);
-		
-		try{
-		rtiamb.updateAttributeValues(human.getOih(), attributes, generateTag(), time);
-		} catch (Exception e){
-			System.out.println("In Collected Exception");
-		}
-	}
-	
-	
-	public void sendCollectedAcquireRequest(Human human) throws Exception{
-		AttributeHandleSet handles = rtiamb.getAttributeHandleSetFactory().create();
-		handles.add(collectedHandle);
-		rtiamb.attributeOwnershipAcquisition(human.getOih(), handles, generateTag());
-	}
-	
 	public double getCurrentFedTime(){
 		return fedamb.federateTime;
-	}
-	
-	public boolean timeOver(){
-		if(fedamb.federateTime > HumanSimValues.MAX_SIM_TIME.toSeconds().value())
-			return true;
-		else
-			return false;
 	}
 
 	public void handleRegistration(String humanName, String busStop, String destination){

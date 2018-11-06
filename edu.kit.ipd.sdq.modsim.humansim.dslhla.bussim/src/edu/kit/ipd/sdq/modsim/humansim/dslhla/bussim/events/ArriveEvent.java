@@ -26,15 +26,11 @@ public class ArriveEvent extends AbstractSimEventDelegator<Bus> {
     	BusModel m = (BusModel)this.getModel();
         BusStop currentStation = bus.arrive();
         
-        Utils.log(bus, "Arrived at station " + currentStation);
+//        Utils.log(bus, "Arrived at station " + currentStation);
         // schedule unloading event
         UnloadPassengersEvent e = new UnloadPassengersEvent(this.getModel(), "Unload Passengers");
-        //
-        if(HumanSimValues.FULL_SYNC) {
-        	m.getComponent().synchronisedAdvancedTime(0, e, bus);
-        } else {
-        	e.schedule(bus, 0);
-        }
+        e.schedule(bus, 0);
+        
         
     }
 
