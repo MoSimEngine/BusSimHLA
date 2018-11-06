@@ -51,9 +51,7 @@ public class BusModel extends AbstractSimulationModel{
 
 	        // define buses
 	        bus = new Bus(20, stop1, lineOne, this, "Bus 1");
-	   
-	       
-	        
+	
 	        try {
 				component.runFederate("BusFed");
 			} catch (Exception e) {
@@ -63,40 +61,14 @@ public class BusModel extends AbstractSimulationModel{
 	   
 	}
 	public void finalise() {
-		
-	
-	 
-		 
-		
-		System.out.println("Closed Fed");
-//		 for (Human human : this.humans) {
-//			 	
-//			 	//Duration[] away = (Duration[]) human.getAwayFromHomeTimes().toArray();
-//			 	
-//			 	ArrayList<Duration> away = human.getAwayFromHomeTimes();
-//			 	ArrayList<Duration> driven = human.getDrivingTimes();
-//			 	ArrayList<Duration> waited = human.getBusWaitingTimes();
-//			 	
-//			 	
-//			 	for (int i = 0; i < away.size(); i++){
-//			 		
-//			 		
-//			 		System.out.println("Day " + i + ": Away From Home (Hours)" + Math.round(away.get(i).toHours().value()*100.00) /100.00 
-//			 				+ "; Driven (Minutes): " + Math.round(driven.get(i).toMinutes().value() * 100.00)/100.00 
-//			 				+ "; Waiting at Stations (Minutes): " + waited.get(i).toMinutes().value());
-//				}
-//			 	
-//			 	
-//		        System.out.println("-----------------------------");
-//		}       	
-		
-		
 		try {
-			component.cleanFederate();
+			component.endExecution();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		Utils.log("Ended Federation");
 	}
 
     /**
