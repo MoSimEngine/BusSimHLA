@@ -386,7 +386,7 @@ public class BusFederate {
 			advanceStep = timestep;
 		}
 
-		if (advanceStep != 0.0) {
+		if (advanceStep > fedamb.federateLookahead) {
 			try {
 				if (!advanceTime(advanceStep)) {
 					simulation.getSimulationControl().stop();
