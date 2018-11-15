@@ -15,7 +15,7 @@ import hla.rti1516e.exceptions.RTIexception;
 public class LoadPassengersEvent extends AbstractSimEventDelegator<Bus> {
 
     public static final Duration LOADING_TIME_PER_PASSENGER = Duration.seconds(3);
-
+    private double timestep = 0;
     public LoadPassengersEvent(ISimulationModel model, String name) {
         super(model, name);
     }
@@ -58,9 +58,11 @@ public class LoadPassengersEvent extends AbstractSimEventDelegator<Bus> {
         	Utils.log(bus, "Loading " + h.getName() + " at position + " + position.getName());
         }
 
+        timestep = totalLoadingTime;
         // schedule load finished event
         LoadFinishedEvent e = new LoadFinishedEvent(totalLoadingTime, remainingPassengers, this.getModel(), "LoadFinished");
-        e.schedule(bus, totalLoadingTime);
+//        e.schedule(bus, timestep);
+        m.getComponent().synchronisedAdvancedTime(timestep, e, bus);
     }
 
 }

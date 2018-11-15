@@ -1,5 +1,6 @@
 package edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.entities;
 
+import java.util.LinkedList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import de.uka.ipd.sdq.simulation.abstractsimengine.AbstractSimEntityDelegator;
@@ -7,6 +8,8 @@ import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationModel;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component.Duration;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component.Route;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component.Route.RouteSegment;
+import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.timelinesynchronization.SynchroniseToken;
+
 
 /**
  * This entity represents a bus which transports passengers between different bus stations.
@@ -36,7 +39,10 @@ public class Bus extends AbstractSimEntityDelegator {
 
     public static final Duration LOADING_TIME_PER_PASSENGER = Duration.seconds(6);
     private ConcurrentLinkedQueue<Human> transportedHumans;
-    
+	private SynchroniseToken currentTAToken;
+	private int taTokenIndex = -1;
+	
+	private LinkedList<SynchroniseToken> regTokens;
     public Bus(int totalSeats, BusStop initialPosition, Route route, ISimulationModel model, String name) {
         super(model, name);
         this.totalSeats = totalSeats;
@@ -129,6 +135,34 @@ public class Bus extends AbstractSimEntityDelegator {
 	
 	public Human unloadHuman(){
 		return transportedHumans.poll();
+	}
+	
+	public SynchroniseToken getTaToken() {
+		return currentTAToken;
+	}
+
+	public void setTaToken(SynchroniseToken token) {
+		this.currentTAToken = token;
+	}
+
+	public LinkedList<SynchroniseToken> getRegTokens() {
+		return regTokens;
+	}
+
+	public void addRegToken(SynchroniseToken regToken) {
+		regTokens.add(regToken);
+	}
+	
+	public void removeRegToken(SynchroniseToken regToken) {
+		regTokens.remove(regToken);
+	}
+
+	public int getTaTokenIndex() {
+		return taTokenIndex;
+	}
+
+	public void setTaTokenIndex(int taTokenIndex) {
+		this.taTokenIndex = taTokenIndex;
 	}
 
 }

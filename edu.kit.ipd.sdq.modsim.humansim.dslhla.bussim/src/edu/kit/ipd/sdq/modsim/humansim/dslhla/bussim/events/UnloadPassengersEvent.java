@@ -14,7 +14,7 @@ import hla.rti1516e.exceptions.RTIexception;
 
 
 public class UnloadPassengersEvent extends AbstractSimEventDelegator<Bus> {
-
+	private double timestep = 0;
     protected UnloadPassengersEvent(ISimulationModel model, String name) {
         super(model, name);
     }
@@ -49,8 +49,9 @@ public class UnloadPassengersEvent extends AbstractSimEventDelegator<Bus> {
     			}
         	}
         
+        timestep = totalUnloadingTime;
         UnloadingFinishedEvent e = new UnloadingFinishedEvent(totalUnloadingTime, this.getModel(), "Unload Finished");
-        m.getComponent().synchronisedAdvancedTime(totalUnloadingTime, e, bus);
+        m.getComponent().synchronisedAdvancedTime(timestep, e, bus);
         
     
     }

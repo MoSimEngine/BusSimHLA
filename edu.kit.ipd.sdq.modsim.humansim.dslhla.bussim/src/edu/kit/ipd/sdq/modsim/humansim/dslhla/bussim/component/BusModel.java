@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component;
 
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import de.uka.ipd.sdq.simulation.abstractsimengine.AbstractSimulationModel;
@@ -11,46 +12,57 @@ import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.entities.Bus;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.entities.BusStop;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.entities.Human;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.events.LoadPassengersEvent;
+import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.timelinesynchronization.RTITimelineSynchronizer;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.util.Utils;
+
 
 
 
 public class BusModel extends AbstractSimulationModel{
 
-	 private BusStop stop1;
-	 private BusStop stop2;
-	 private BusStop stop3;
-	 private Bus bus; 
-	 private BusStop[] stops;
 	 public int modelRun;
 	 public LinkedList<Double> durations;
-	 
+	 private RTITimelineSynchronizer timelineSynchronizer;
 	 private LinkedList<Human> humans;
-	 
+	 private LinkedList<Bus> busses;
+	 private ArrayList<BusStop> stops;
 	 private BusFederate component;
 	 
 	public BusModel(ISimulationConfig config, ISimEngineFactory factory) {
 		super(config, factory);
 		humans = new LinkedList<Human>();
+		busses = new LinkedList<Bus>();
+		stops = new ArrayList<BusStop>();
 	}
 	
 	public void init() {
 		
-		 // define bus stops
-        stop1 = new BusStop(this, "Stop1");
-        stop2 = new BusStop(this, "Stop2");
-        stop3 = new BusStop(this, "Stop3");
         // define bus stops
-		 stops = new BusStop[]{stop1, stop2, stop3};
-	        
+        
+        int numStops = 6;
+        
+        for(int i = 1; i <= numStops; i++) {
+        	stops.add(new BusStop(this, "Stop" + i));
+        }
+        
+        
+        
+        
 	        // define route
 	        Route lineOne = new Route();
-	        lineOne.addSegment(stop1, stop2, 10, 35);
-	        lineOne.addSegment(stop2, stop3, 20, 50);
-	        lineOne.addSegment(stop3, stop1, 30, 50);
+	        lineOne.addSegment(stops.get(0), stops.get(1), 20, 50);
+	        lineOne.addSegment(stops.get(1), stops.get(2), 20, 50);
+	        lineOne.addSegment(stops.get(2), stops.get(1), 30, 50);
+	        
+	        Route lineTwo = new Route();
+	        lineOne.addSegment(stops.get(3), stops.get(4), 20, 50);
+	        lineOne.addSegment(stops.get(4), stops.get(5), 20, 50);
+	        lineOne.addSegment(stops.get(5), stops.get(3), 30, 50);
 
-	        // define buses
-	        bus = new Bus(40, stop1, lineOne, this, "Bus 1");
+	        //define busses
+	        busses.add(new Bus(40, stops.get(0), lineOne, this, "Bus1"));
+	        busses.add(new Bus(20, stops.get(3), lineTwo, this, "Bus2"));
+	      
 	
 	        try {
 				component.runFederate("BusFed");
@@ -64,10 +76,8 @@ public class BusModel extends AbstractSimulationModel{
 		try {
 			component.endExecution();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 		Utils.log("Ended Federation");
 	}
 
@@ -93,17 +103,25 @@ public class BusModel extends AbstractSimulationModel{
 
 	public void startSimulation(){
 		
-		System.out.println("Start bus at " + component.getCurrentFedTime());
+		System.out.println("Start busses at " + component.getCurrentFedTime());
 	
-	            new LoadPassengersEvent(this, "Load Passengers").schedule(bus, component.getCurrentFedTime());
+		for (Bus bus : busses) {
+			new LoadPassengersEvent(this, "Load Passengers").schedule(bus, component.getCurrentFedTime());
+		}
 	}
 
-	public BusStop[] getStops() {
+	public ArrayList<BusStop> getStops() {
 		return stops;
 	}
 	
-	public Bus getBus(){
-		return bus;
+	public Bus getBus(String name){
+		for (Bus bus : busses) {
+			if(bus.getName().equals(name)) {
+				return bus;
+			}
+		}
+		
+		return null;
 	}
 	
 	public void addHuman(Human hu){
@@ -129,6 +147,7 @@ public class BusModel extends AbstractSimulationModel{
 		
 		for (Human humanBS : getHumans()) {
 			if(humanBS.getName().equals(humanName)){
+//				Utils.log(humanBS, "Registering Human");
 				for (BusStop bs : getStops()) {
 					
 					if(bs.getName().equals(busStop)){
@@ -163,5 +182,13 @@ public class BusModel extends AbstractSimulationModel{
 			}
 		}
 		return false;
+	}
+	
+	public RTITimelineSynchronizer getTimelineSynchronizer() {
+		return timelineSynchronizer;
+	}
+
+	public LinkedList<Bus> getBusses() {
+		return busses;
 	}
 }

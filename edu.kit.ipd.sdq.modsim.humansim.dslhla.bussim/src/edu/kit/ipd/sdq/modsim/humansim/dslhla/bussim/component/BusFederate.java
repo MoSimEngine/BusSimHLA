@@ -322,21 +322,19 @@ public class BusFederate {
 
 	private void initialiseBusStops() throws Exception {
 
-		for (int i = 0; i < simulation.getStops().length; i++) {
-
-			BusStop tmp = simulation.getStops()[i];
-
+		
+		for (BusStop stop : simulation.getStops()) {
+			
 			ObjectInstanceHandle oih = registerBusStopObject();
-
-			simulation.getStops()[i].setOih(oih);
-			simulation.getStops()[i].setOch(busStopObjectClassHandle);
-
+			stop.setOih(oih);
+			stop.setOch(busStopObjectClassHandle);
+			
 			AttributeHandleValueMap attributes = rtiamb.getAttributeHandleValueMapFactory().create(1);
-			HLAASCIIstring busStopName = encoderFactory.createHLAASCIIstring(tmp.getName());
+			HLAASCIIstring busStopName = encoderFactory.createHLAASCIIstring(stop.getName());
 			attributes.put(busStopNameAttributeHandle, busStopName.toByteArray());
 			HLAfloat64Time time = timeFactory.makeTime(fedamb.federateTime + 1.0);
-			rtiamb.updateAttributeValues(tmp.getOih(), attributes, generateTag(), time);
-
+			rtiamb.updateAttributeValues(stop.getOih(), attributes, generateTag(), time);
+			
 		}
 	}
 
@@ -357,7 +355,7 @@ public class BusFederate {
 		// request the advance
 		fedamb.isAdvancing = true;
 		HLAfloat64Time time = timeFactory.makeTime(advancingTo);
-
+//		Utils.log("Advancing from: " + fedamb.federateTime + " to " + (fedamb.federateTime + timestep));
 		try {
 			rtiamb.timeAdvanceRequest(time);
 		} catch (Exception e) {
@@ -374,6 +372,35 @@ public class BusFederate {
 		return belowTime;
 	}
 
+	
+	public synchronized void synchronisedAdvancedTime(double timestep) {
+
+		double advanceStep = 0.0;
+		
+		if(-0.000000001 < timestep && timestep < 0.00000001) {
+			return;
+		}
+		
+		if (getCurrentFedTime() < simulation.getSimulationControl().getCurrentSimulationTime()) {
+			double diff = 0.0;
+			diff = simulation.getSimulationControl().getCurrentSimulationTime() - getCurrentFedTime();
+			advanceStep = timestep + diff;
+		} else {
+			advanceStep = timestep;
+		}
+		
+		if (advanceStep > fedamb.federateLookahead) {
+			try {
+				if (!advanceTime(advanceStep)) {
+					return;
+				}
+			} catch (RTIexception e) {
+				e.printStackTrace();
+			}
+
+		}
+	}
+	
 	public synchronized void synchronisedAdvancedTime(double timestep, AbstractSimEventDelegator simevent,
 			AbstractSimEntityDelegator simentity) {
 
@@ -464,9 +491,9 @@ public class BusFederate {
 
 		for (Human human : simulation.getHumans()) {
 			if (human.getOih().equals(oih)) {
-				for (int i = 0; i < simulation.getStops().length; i++) {
-					if (simulation.getStops()[i].getName().equals(destination)) {
-						human.setDestination(simulation.getStops()[i]);
+				for (BusStop stop : simulation.getStops()) {
+					if (stop.getName().equals(destination)) {
+						human.setDestination(stop);
 						found = true;
 						if (!human.isInitialised()) {
 							human.isInitialised();
@@ -484,12 +511,11 @@ public class BusFederate {
 
 			hu.setInitialised(true);
 
-			for (int i = 0; i < simulation.getStops().length; i++) {
-				if (simulation.getStops()[i].getName().equals(destination)) {
-					hu.setDestination(simulation.getStops()[i]);
+			for(BusStop stop : simulation.getStops()) {
+				if (stop.getName().equals(destination)) {
+					hu.setDestination(stop);
 				}
 			}
-
 		}
 
 	}
@@ -498,11 +524,11 @@ public class BusFederate {
 		for (Human human : simulation.getHumans()) {
 			if (human.getOih().equals(oih)) {
 				// log("Found Human to update destination");
-				for (int i = 0; i < simulation.getStops().length; i++) {
-					if (simulation.getStops()[i].getName().equals(destination)) {
+				for(BusStop stop : simulation.getStops()) {
+					if (stop.getName().equals(destination)) {
 
 						// log("Found BusStop to update");
-						human.setDestination(simulation.getStops()[i]);
+						human.setDestination(stop);
 						return;
 					}
 				}
@@ -547,5 +573,9 @@ public class BusFederate {
 
 	public RTIambassador getRTIAmb() {
 		return rtiamb;
+	}
+	
+	public boolean isAdvancingTime() {
+		return fedamb.isAdvancing;
 	}
 }

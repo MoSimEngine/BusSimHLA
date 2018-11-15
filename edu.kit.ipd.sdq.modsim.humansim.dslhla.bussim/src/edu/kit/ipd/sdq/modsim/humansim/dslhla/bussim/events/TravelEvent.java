@@ -15,6 +15,8 @@ import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.util.Utils;
 
 public class TravelEvent extends AbstractSimEventDelegator<Bus> {
 
+	private double timestep = 0;
+	
     public TravelEvent(ISimulationModel model, String name) {
         super(model, name);
     }
@@ -28,9 +30,11 @@ public class TravelEvent extends AbstractSimEventDelegator<Bus> {
                 .value();
         
         // wait for the bus to arrive at the next station^
-        ArriveEvent e = new ArriveEvent(drivingTime, this.getModel(), "Arrive Event");
-        e.schedule(bus, drivingTime);
         
+        timestep = drivingTime;
+        ArriveEvent e = new ArriveEvent(drivingTime, this.getModel(), "Arrive Event");
+//        e.schedule(bus, timestep);
+        m.getComponent().synchronisedAdvancedTime(timestep, e, bus);
     }
 
 }

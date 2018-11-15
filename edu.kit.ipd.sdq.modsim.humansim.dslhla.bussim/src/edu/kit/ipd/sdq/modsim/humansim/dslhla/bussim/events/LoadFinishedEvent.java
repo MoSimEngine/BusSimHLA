@@ -12,6 +12,8 @@ public class LoadFinishedEvent extends AbstractSimEventDelegator<Bus> {
     private int remainingPassengers;
 
     private double loadingTime;
+    
+    private double timestep = 0;
 
     public LoadFinishedEvent(double loadingTime, int remainingPassengers, ISimulationModel model, String name) {
         super(model, name);
@@ -32,8 +34,8 @@ public class LoadFinishedEvent extends AbstractSimEventDelegator<Bus> {
       
        
         TravelEvent e = new TravelEvent(this.getModel(), "Travel");
-        e.schedule(bus, 0);
-        
+//        e.schedule(bus, timestep);
+        m.getComponent().synchronisedAdvancedTime(timestep, e, bus);
        
     }
 
