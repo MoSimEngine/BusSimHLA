@@ -10,12 +10,8 @@ import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.util.Utils;
 
 public class UnloadingFinishedEvent extends AbstractSimEventDelegator<Bus> {
 
-    private double unloadingTime;
-    private double timestep = 0;
     public UnloadingFinishedEvent(double unloadingTime,ISimulationModel model, String name) {
         super(model, name);
-
-        this.unloadingTime = unloadingTime;
     }
 
     @Override
@@ -27,8 +23,8 @@ public class UnloadingFinishedEvent extends AbstractSimEventDelegator<Bus> {
     	
         // schedule load passengers event
         LoadPassengersEvent e = new LoadPassengersEvent(this.getModel(), "Load Passengers");
-//        e.schedule(bus, timestep);
-        m.getComponent().synchronisedAdvancedTime(timestep, e, bus);
+        e.schedule(bus, 0);
+//        m.getComponent().synchronisedAdvancedTime(timestep, e, bus);
     }
 
 }

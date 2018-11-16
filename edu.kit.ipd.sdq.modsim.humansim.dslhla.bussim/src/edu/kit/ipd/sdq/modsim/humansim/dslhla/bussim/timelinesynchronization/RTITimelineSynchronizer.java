@@ -80,7 +80,8 @@ public class RTITimelineSynchronizer implements TimelineSynchronizer {
 
 
 		sortTokens();
-
+//		printTokenOccupationNames();
+		
 		int counter = 0;
 		int j = 0;
 		SynchroniseToken actionTok;
@@ -91,7 +92,7 @@ public class RTITimelineSynchronizer implements TimelineSynchronizer {
 		((Bus) timeAdvanceTok.getEntity()).setTaToken(null);
 		for (; j < rtiActivityTokens.size(); j++) {
 			actionTok = rtiActivityTokens.get(j);
-			if (timeAdvanceTok.getReturnEventTimepoint() > actionTok.getReturnEventTimepoint()) {
+			if (actionTok.getReturnEventTimepoint() <= timeAdvanceTok.getReturnEventTimepoint()) {
 				actionTok.executeAction();
 				((Bus) actionTok.getEntity()).removeRegToken(actionTok);
 				counter++;
@@ -154,7 +155,7 @@ public class RTITimelineSynchronizer implements TimelineSynchronizer {
 
 	public boolean checkForExecution() {
 
-		if (advanceTimeTokens.size() == model.getHumans().size()) {
+		if (advanceTimeTokens.size() == model.getBusses().size()) {
 			return true;
 		}
 

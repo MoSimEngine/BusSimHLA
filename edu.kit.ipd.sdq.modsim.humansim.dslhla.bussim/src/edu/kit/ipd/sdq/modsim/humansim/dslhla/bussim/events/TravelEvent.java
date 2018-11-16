@@ -10,6 +10,7 @@ import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component.Duration;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component.HumanSimValues;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component.Route.RouteSegment;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.entities.Bus;
+import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.timelinesynchronization.TimeAdvanceToken;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.util.Utils;
 
 
@@ -33,8 +34,8 @@ public class TravelEvent extends AbstractSimEventDelegator<Bus> {
         
         timestep = drivingTime;
         ArriveEvent e = new ArriveEvent(drivingTime, this.getModel(), "Arrive Event");
-//        e.schedule(bus, timestep);
-        m.getComponent().synchronisedAdvancedTime(timestep, e, bus);
+        TimeAdvanceToken token = new TimeAdvanceToken(e, bus, timestep);
+		m.getTimelineSynchronizer().putToken(token, false);
     }
 
 }

@@ -13,6 +13,8 @@ import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.entities.BusStop;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.entities.Human;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.events.LoadPassengersEvent;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.timelinesynchronization.RTITimelineSynchronizer;
+import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.timelinesynchronization.TimeAdvanceSynchronisationEvent;
+import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.timelinesynchronization.TimeAdvanceToken;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.util.Utils;
 
 
@@ -51,19 +53,25 @@ public class BusModel extends AbstractSimulationModel{
 	        // define route
 	        Route lineOne = new Route();
 	        lineOne.addSegment(stops.get(0), stops.get(1), 20, 50);
-	        lineOne.addSegment(stops.get(1), stops.get(2), 20, 50);
-	        lineOne.addSegment(stops.get(2), stops.get(1), 30, 50);
+	        lineOne.addSegment(stops.get(1), stops.get(2), 40, 50);
+	        lineOne.addSegment(stops.get(2), stops.get(0), 30, 50);
 	        
 	        Route lineTwo = new Route();
-	        lineOne.addSegment(stops.get(3), stops.get(4), 20, 50);
-	        lineOne.addSegment(stops.get(4), stops.get(5), 20, 50);
-	        lineOne.addSegment(stops.get(5), stops.get(3), 30, 50);
+	        lineTwo.addSegment(stops.get(3), stops.get(4), 20, 50);
+	        lineTwo.addSegment(stops.get(4), stops.get(5), 30, 50);
+	        lineTwo.addSegment(stops.get(5), stops.get(3), 40, 50);
 
 	        //define busses
 	        busses.add(new Bus(40, stops.get(0), lineOne, this, "Bus1"));
-	        busses.add(new Bus(20, stops.get(3), lineTwo, this, "Bus2"));
-	      
-	
+	        busses.add(new Bus(40, stops.get(1), lineOne, this, "Bus2"));
+	        busses.add(new Bus(40, stops.get(2), lineOne, this, "Bus3"));
+	        busses.add(new Bus(40, stops.get(0), lineOne, this, "Bus4"));
+	     
+	        busses.add(new Bus(20, stops.get(3), lineTwo, this, "Bus5"));
+	        busses.add(new Bus(20, stops.get(4), lineTwo, this, "Bus6"));
+	        busses.add(new Bus(20, stops.get(5), lineTwo, this, "Bus7"));
+	        busses.add(new Bus(20, stops.get(4), lineTwo, this, "Bus8"));
+	        
 	        try {
 				component.runFederate("BusFed");
 			} catch (Exception e) {
@@ -103,11 +111,27 @@ public class BusModel extends AbstractSimulationModel{
 
 	public void startSimulation(){
 		
+		this.timelineSynchronizer = new RTITimelineSynchronizer(this);
+		
 		System.out.println("Start busses at " + component.getCurrentFedTime());
 	
-		for (Bus bus : busses) {
-			new LoadPassengersEvent(this, "Load Passengers").schedule(bus, component.getCurrentFedTime());
+//		for (Bus bus : busses) {
+//			new LoadPassengersEvent(this, "Load Passengers").schedule(bus, component.getCurrentFedTime());
+//		}
+//	
+	
+		for (int i = 0; i < busses.size(); i++) {
+			double timestep = component.getCurrentFedTime();
+			if(i == 3 || i == 7) {
+				timestep += Duration.minutes(10).toSeconds().value();
+			}
+			
+			TimeAdvanceToken tok = new TimeAdvanceToken(new LoadPassengersEvent(this, "Load Passengers"), busses.get(i), timestep);
+			timelineSynchronizer.putToken(tok, false);
 		}
+		
+		TimeAdvanceSynchronisationEvent e = new TimeAdvanceSynchronisationEvent(this, "AdvanceTime", null, 0.0);
+		e.schedule(busses.get(0), 0);
 	}
 
 	public ArrayList<BusStop> getStops() {

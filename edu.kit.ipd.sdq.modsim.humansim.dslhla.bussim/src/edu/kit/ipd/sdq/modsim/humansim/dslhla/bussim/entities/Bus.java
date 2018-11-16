@@ -47,7 +47,7 @@ public class Bus extends AbstractSimEntityDelegator {
         super(model, name);
         this.totalSeats = totalSeats;
         this.route = route;
-
+        this.regTokens = new LinkedList<SynchroniseToken>();
         // start in unloading state
         this.position = initialPosition;
         this.state = BusState.UNLOADING_PASSENGERS;

@@ -483,12 +483,7 @@ public class BusFederate {
 				Utils.log("Got more Attributes than expected");
 			}
 		}
-
-		if (humanName.equals("")) {
-			handleHumanDestinationChange(oih, destination);
-			return;
-		}
-
+		
 		for (Human human : simulation.getHumans()) {
 			if (human.getOih().equals(oih)) {
 				for (BusStop stop : simulation.getStops()) {
@@ -514,23 +509,6 @@ public class BusFederate {
 			for(BusStop stop : simulation.getStops()) {
 				if (stop.getName().equals(destination)) {
 					hu.setDestination(stop);
-				}
-			}
-		}
-
-	}
-
-	private void handleHumanDestinationChange(ObjectInstanceHandle oih, String destination) {
-		for (Human human : simulation.getHumans()) {
-			if (human.getOih().equals(oih)) {
-				// log("Found Human to update destination");
-				for(BusStop stop : simulation.getStops()) {
-					if (stop.getName().equals(destination)) {
-
-						// log("Found BusStop to update");
-						human.setDestination(stop);
-						return;
-					}
 				}
 			}
 		}

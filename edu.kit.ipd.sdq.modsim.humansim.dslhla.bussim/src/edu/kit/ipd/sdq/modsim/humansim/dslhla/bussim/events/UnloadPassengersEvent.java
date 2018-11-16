@@ -9,50 +9,48 @@ import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component.HumanSimValues;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.entities.Bus;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.entities.BusStop;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.entities.Human;
+import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.timelinesynchronization.TimeAdvanceToken;
+import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.timelinesynchronization.UnloadToken;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.util.Utils;
 import hla.rti1516e.exceptions.RTIexception;
 
-
 public class UnloadPassengersEvent extends AbstractSimEventDelegator<Bus> {
 	private double timestep = 0;
-    protected UnloadPassengersEvent(ISimulationModel model, String name) {
-        super(model, name);
-    }
 
-    @Override
-    public void eventRoutine(Bus bus) {
-    	BusModel m = (BusModel)this.getModel();
-        BusStop position = bus.getPosition();
-        bus.unload();
+	protected UnloadPassengersEvent(ISimulationModel model, String name) {
+		super(model, name);
+	}
 
-        // wait for the passengers to leave the bus
-        int numTransportedHumanSize = bus.getNumTransportedHumans();
-        double totalUnloadingTime = 0.0;
-        double unloadingTime = Bus.UNLOADING_TIME_PER_PASSENGER.toSeconds().value();
-        for(int i = 0; i < numTransportedHumanSize; i++){
-        	Human h = bus.unloadHuman();
-        	if(h.getDestination().equals(bus.getPosition())){
-    
-	        			try {
-							m.getComponent().sendHumanExitsInteraction(h, position, unloadingTime);
-						} catch (RTIexception e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-	        		
-	        		
-	        		h.setCollected(false);
-	        		totalUnloadingTime += unloadingTime;
-	        		Utils.log(bus, "Unloading " + h.getName() + " at position " + position.getName(), true);
-    			} else {
-    				bus.transportHuman(h);
-    			}
-        	}
-        
-        timestep = totalUnloadingTime;
-        UnloadingFinishedEvent e = new UnloadingFinishedEvent(totalUnloadingTime, this.getModel(), "Unload Finished");
-        m.getComponent().synchronisedAdvancedTime(timestep, e, bus);
-        
-    
-    }
+	@Override
+	public void eventRoutine(Bus bus) {
+		BusModel m = (BusModel) this.getModel();
+		BusStop position = bus.getPosition();
+		bus.unload();
+
+		// wait for the passengers to leave the bus
+		int numTransportedHumanSize = bus.getNumTransportedHumans();
+		double totalUnloadingTime = 0.0;
+		double unloadingTime = Bus.UNLOADING_TIME_PER_PASSENGER.toSeconds().value();
+		for (int i = 0; i < numTransportedHumanSize; i++) {
+			Human h = bus.unloadHuman();
+			if (h.getDestination().equals(bus.getPosition())) {
+
+				UnloadToken unloadToken = new UnloadToken(bus, unloadingTime, position, h);
+				m.getTimelineSynchronizer().putToken(unloadToken, false);
+				
+				h.setCollected(false);
+				totalUnloadingTime += unloadingTime;
+				Utils.log(bus, "Unloading " + h.getName() + " at position " + position.getName(), true);
+			} else {
+				bus.transportHuman(h);
+			}
+		}
+
+		timestep = totalUnloadingTime;
+		UnloadingFinishedEvent e = new UnloadingFinishedEvent(totalUnloadingTime, this.getModel(), "Unload Finished");
+		TimeAdvanceToken token = new TimeAdvanceToken(e, bus, timestep);
+		m.getTimelineSynchronizer().putToken(token, false);
+		
+
+	}
 }
