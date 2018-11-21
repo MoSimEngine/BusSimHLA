@@ -164,5 +164,9 @@ public class Bus extends AbstractSimEntityDelegator {
 	public void setTaTokenIndex(int taTokenIndex) {
 		this.taTokenIndex = taTokenIndex;
 	}
+	
+	public boolean containsDestinationInRoute(BusStop destination) {
+		return route.containsBusStop(destination);
+	}
 
 }

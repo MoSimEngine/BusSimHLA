@@ -1,5 +1,6 @@
 package edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.entities;
 
+import java.util.LinkedList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import de.uka.ipd.sdq.simulation.abstractsimengine.AbstractSimEntityDelegator;
@@ -11,7 +12,7 @@ public class BusStop extends AbstractSimEntityDelegator {
 
 
     
-    private ConcurrentLinkedQueue<Human> passengers;
+    private LinkedList<Human> passengers;
     
     private ObjectInstanceHandle oih;
     private ObjectClassHandle och;
@@ -20,12 +21,16 @@ public class BusStop extends AbstractSimEntityDelegator {
     public BusStop(ISimulationModel model, String name) {
         super(model, name);
         
-       passengers = new ConcurrentLinkedQueue<Human>();
+       passengers = new LinkedList<Human>();
    
     }
     
     public synchronized void setPassenger(Human human){
     	passengers.add(human);
+    }
+    
+    public void placePassengerInFront(Human human) {
+    	passengers.addFirst(human);
     }
     
     public synchronized void removePassenger(Human human){

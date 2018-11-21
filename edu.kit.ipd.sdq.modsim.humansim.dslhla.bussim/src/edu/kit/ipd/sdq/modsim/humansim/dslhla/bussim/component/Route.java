@@ -1,5 +1,6 @@
 package edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,6 +43,16 @@ public class Route {
         }
 
         return this.segmentMap.get(from);
+    }
+    
+    public boolean containsBusStop(BusStop stop) {
+    	Collection<RouteSegment> c = segmentMap.values();
+    	for (RouteSegment routeSegment : c) {
+			if(routeSegment.getTo().equals(stop)) {
+				return true;
+			}
+		}
+    	return false;
     }
 
     public class RouteSegment {

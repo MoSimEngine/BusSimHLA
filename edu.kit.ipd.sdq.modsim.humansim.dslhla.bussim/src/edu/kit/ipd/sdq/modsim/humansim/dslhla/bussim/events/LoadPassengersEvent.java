@@ -1,5 +1,7 @@
 package edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.events;
 
+import java.util.LinkedList;
+
 import de.uka.ipd.sdq.simulation.abstractsimengine.AbstractSimEventDelegator;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationModel;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component.BusModel;
@@ -31,26 +33,40 @@ public class LoadPassengersEvent extends AbstractSimEventDelegator<Bus> {
 
 		int servedPassengers = Math.min(waitingPassengers, bus.getTotalSeats());
 		if (servedPassengers < waitingPassengers) {
-			Utils.log(bus, "could not serve all passengers!!!");
+//			Utils.log(bus, "could not serve all passengers!!!");
 		}
-		
+
 		bus.load(servedPassengers);
 		int remainingPassengers = waitingPassengers - servedPassengers;
 		double totalLoadingTime = 0;
 		totalLoadingTime = 0;
 		
+		LinkedList<Human> notPickedup = new LinkedList<Human>();
+
 		for (int i = 0; i < servedPassengers; i++) {
 			Human h = position.getPassenger();
-			bus.transportHuman(h);
-			double loadingTime = Bus.LOADING_TIME_PER_PASSENGER.toSeconds().value();
 
-			// picks up human from home busstop
-			LoadToken loadToken = new LoadToken(bus, loadingTime, position, h);
-			m.getTimelineSynchronizer().putToken(loadToken, false);
+			if (bus.containsDestinationInRoute(h.getDestination())) {
 
-			h.setCollected(true);
-			totalLoadingTime += loadingTime;
-			Utils.log(bus, "Loading " + h.getName() + " at position" + position.getName());
+				bus.transportHuman(h);
+				double loadingTime = Bus.LOADING_TIME_PER_PASSENGER.toSeconds().value();
+
+				// picks up human from home busstop
+				LoadToken loadToken = new LoadToken(bus, loadingTime, position, h);
+				m.getTimelineSynchronizer().putToken(loadToken, false);
+
+				h.setCollected(true);
+				totalLoadingTime += loadingTime;
+//				Utils.log(bus, "Loading " + h.getName() + " at position" + position.getName());
+			} else {
+				notPickedup.add(h);
+				i--;
+			}
+		}
+		if (notPickedup.size() != 0) {
+			for (int j = notPickedup.size() - 1; j >= 0; j--) {
+				position.placePassengerInFront(notPickedup.get(j));
+			}
 		}
 
 		timestep = totalLoadingTime;

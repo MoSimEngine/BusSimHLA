@@ -141,8 +141,7 @@ public class BusFederate {
 
 		// Define if federation time is constrained by others or regulates time for
 		// others
-		constrainTime = true;
-		regulateTime = true;
+	
 		runTimePolicyEnabling();
 
 		while (fedamb.isReadyToRun == false) {
@@ -223,6 +222,8 @@ public class BusFederate {
 			while (fedamb.isRegulating == false) {
 				rtiamb.evokeMultipleCallbacks(0.1, 0.2);
 			}
+			
+			Utils.log(fedInfoStr + "Timeregulating: " + fedamb.isRegulating);
 		}
 
 		if (constrainTime) {
@@ -231,9 +232,11 @@ public class BusFederate {
 			while (fedamb.isConstrained == false) {
 				rtiamb.evokeMultipleCallbacks(0.1, 0.2);
 			}
+			
+
+			Utils.log(fedInfoStr + "Timeconstrained: " + fedamb.isConstrained);
 		}
 
-		Utils.log(fedInfoStr + "Time Policy Enabled");
 	}
 
 	private void runTimePolicyEnabling() throws Exception {

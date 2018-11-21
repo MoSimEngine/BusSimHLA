@@ -19,7 +19,8 @@ public class ArriveEvent extends AbstractSimEventDelegator<Bus> {
 
     @Override
     public void eventRoutine(Bus bus) {
-        bus.arrive();
+    	BusStop currentStation = bus.arrive();
+//        Utils.log(bus, "Arrived at station " + currentStation);
         UnloadPassengersEvent e = new UnloadPassengersEvent(this.getModel(), "Unload Passengers");
         e.schedule(bus,0);
     }

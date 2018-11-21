@@ -40,7 +40,7 @@ public class UnloadPassengersEvent extends AbstractSimEventDelegator<Bus> {
 				
 				h.setCollected(false);
 				totalUnloadingTime += unloadingTime;
-				Utils.log(bus, "Unloading " + h.getName() + " at position " + position.getName(), true);
+//				Utils.log(bus, "Unloading " + h.getName() + " at position " + position.getName(), true);
 			} else {
 				bus.transportHuman(h);
 			}
