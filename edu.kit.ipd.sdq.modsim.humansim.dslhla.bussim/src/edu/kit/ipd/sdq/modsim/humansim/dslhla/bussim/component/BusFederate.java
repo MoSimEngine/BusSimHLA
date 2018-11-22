@@ -160,7 +160,7 @@ public class BusFederate {
 		}
 
 		for (Human h : simulation.getHumans()) {
-			Utils.log("Human: " + h.getName() + " : " + h.getMovementType());
+			Utils.log("Human: " + h.getName());
 		}
 		System.out.println("Total # Humans:" + simulation.getHumans().size());
 
@@ -479,10 +479,7 @@ public class BusFederate {
 			} else if (handle.equals(destinationHandle)) {
 				destination = (String) adapterService.filter(String.class.getTypeName(),
 						attributes.get(destinationHandle));
-			} else if (handle.equals(movementTypeHandle)) {
-				movementType = (String) adapterService.filter(String.class.getTypeName(),
-						attributes.get(movementTypeHandle));
-			} else {
+			}  else {
 				Utils.log("Got more Attributes than expected");
 			}
 		}
@@ -503,7 +500,7 @@ public class BusFederate {
 
 		if (!found) {
 
-			Human hu = new Human(simulation, humanName, movementType, humanObjectClassHandle, oih);
+			Human hu = new Human(simulation, humanName, humanObjectClassHandle, oih);
 
 			simulation.addHuman(hu);
 

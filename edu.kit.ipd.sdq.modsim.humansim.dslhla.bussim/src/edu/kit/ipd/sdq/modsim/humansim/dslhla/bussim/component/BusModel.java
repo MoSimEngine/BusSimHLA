@@ -124,16 +124,13 @@ public class BusModel extends AbstractSimulationModel{
 	
 		for (int i = 0; i < buses.size(); i++) {
 			double timestep = component.getCurrentFedTime();
-			if(i == 3 || i == 7) {
-				timestep += Duration.minutes(10).toSeconds().value();
-			}
 			
 			TimeAdvanceToken tok = new TimeAdvanceToken(new LoadPassengersEvent(this, "Load Passengers"), buses.get(i), timestep);
 			timelineSynchronizer.putToken(tok, false);
 		}
 		
-		TimeAdvanceSynchronisationEvent e = new TimeAdvanceSynchronisationEvent(this, "AdvanceTime", null, 0.0);
-		e.schedule(buses.get(0), 0);
+//		TimeAdvanceSynchronisationEvent e = new TimeAdvanceSynchronisationEvent(this, "AdvanceTime", null, 0.0);
+//		e.schedule(buses.get(0), 0);
 	}
 
 	public ArrayList<BusStop> getStops() {

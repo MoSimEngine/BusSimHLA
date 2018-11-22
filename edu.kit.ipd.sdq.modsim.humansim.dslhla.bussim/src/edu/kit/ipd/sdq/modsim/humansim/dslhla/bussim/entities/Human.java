@@ -21,19 +21,17 @@ public class Human extends AbstractSimEntityDelegator {
 	
 	private double drivingTime = 0;
 	
-	private String movementType;
-
 	
 	
 
 
-	public Human(ISimulationModel model, String name, String movement, ObjectClassHandle och, ObjectInstanceHandle oih) {
+	public Human(ISimulationModel model, String name, ObjectClassHandle och, ObjectInstanceHandle oih) {
 		super(model, name);
 
 		this.setOih(oih);
 		this.setOch(och);
 		
-		movementType = movement;
+	
 	
 	}
 	
@@ -106,7 +104,5 @@ public class Human extends AbstractSimEntityDelegator {
 			return drivingTime;
 		}
 		
-		public String getMovementType() {
-			return movementType;
-		}
+	
 }
