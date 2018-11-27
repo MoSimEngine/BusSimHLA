@@ -17,7 +17,7 @@ import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.timelinesynchronization.Syn
  * @author J�rg Hen�, Philipp Merkle
  * 
  */
-public class Bus extends AbstractSimEntityDelegator {
+public class Server extends AbstractSimEntityDelegator {
 
     private Route route;
 
@@ -31,19 +31,19 @@ public class Bus extends AbstractSimEntityDelegator {
 
     private BusState state;
 
-    private BusStop position;
+    private Queue position;
 
-    private BusStop destination;
+    private Queue destination;
 
     public static final Duration UNLOADING_TIME_PER_PASSENGER = Duration.seconds(5);
 
     public static final Duration LOADING_TIME_PER_PASSENGER = Duration.seconds(6);
-    private ConcurrentLinkedQueue<Human> transportedHumans;
+    private ConcurrentLinkedQueue<Token> transportedHumans;
 	private SynchroniseToken currentTAToken;
 	private int taTokenIndex = -1;
 	
 	private LinkedList<SynchroniseToken> regTokens;
-    public Bus(int totalSeats, BusStop initialPosition, Route route, ISimulationModel model, String name) {
+    public Server(int totalSeats, Queue initialPosition, Route route, ISimulationModel model, String name) {
         super(model, name);
         this.totalSeats = totalSeats;
         this.route = route;
@@ -51,10 +51,10 @@ public class Bus extends AbstractSimEntityDelegator {
         // start in unloading state
         this.position = initialPosition;
         this.state = BusState.UNLOADING_PASSENGERS;
-        transportedHumans = new ConcurrentLinkedQueue<Human>();
+        transportedHumans = new ConcurrentLinkedQueue<Token>();
     }
 
-    public BusStop arrive() {
+    public Queue arrive() {
         if (isTravelling()) {
             this.state = BusState.ARRIVED;
             this.position = this.destination;
@@ -62,6 +62,8 @@ public class Bus extends AbstractSimEntityDelegator {
         } else {
             throw new IllegalStateException("Can not arrive without being in TRAVELLING state.");
         }
+        
+        this.position.serverAcceptingTokens();
 
         return this.position;
     }
@@ -99,7 +101,7 @@ public class Bus extends AbstractSimEntityDelegator {
         return state.equals(BusState.TRAVELLING);
     }
 
-    public BusStop getPosition() {
+    public Queue getPosition() {
         return this.position;
     }
 
@@ -111,14 +113,14 @@ public class Bus extends AbstractSimEntityDelegator {
         return occupiedSeats;
     }
 
-	public void transportHuman(Human human){
+	public void transportHuman(Token human){
 		if(!transportedHumans.contains(human))
 			transportedHumans.add(human);
 		else 
 			throw new IllegalStateException("Human is already in Bus");
 	}
 	
-	public ConcurrentLinkedQueue<Human> getTransportedHumans(){
+	public ConcurrentLinkedQueue<Token> getTransportedHumans(){
 		return transportedHumans;
 	}
 	
@@ -133,7 +135,7 @@ public class Bus extends AbstractSimEntityDelegator {
 	
 	
 	
-	public Human unloadHuman(){
+	public Token unloadHuman(){
 		return transportedHumans.poll();
 	}
 	
@@ -165,7 +167,7 @@ public class Bus extends AbstractSimEntityDelegator {
 		this.taTokenIndex = taTokenIndex;
 	}
 	
-	public boolean containsDestinationInRoute(BusStop destination) {
+	public boolean containsDestinationInRoute(Queue destination) {
 		return route.containsBusStop(destination);
 	}
 

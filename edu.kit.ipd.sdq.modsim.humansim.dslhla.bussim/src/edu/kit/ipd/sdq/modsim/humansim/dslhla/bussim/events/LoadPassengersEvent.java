@@ -7,15 +7,15 @@ import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationModel;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component.BusModel;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component.Duration;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component.HumanSimValues;
-import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.entities.Bus;
-import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.entities.BusStop;
-import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.entities.Human;
+import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.entities.Server;
+import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.entities.Queue;
+import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.entities.Token;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.timelinesynchronization.LoadToken;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.timelinesynchronization.TimeAdvanceToken;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.util.Utils;
 import hla.rti1516e.exceptions.RTIexception;
 
-public class LoadPassengersEvent extends AbstractSimEventDelegator<Bus> {
+public class LoadPassengersEvent extends AbstractSimEventDelegator<Server> {
 
 	public static final Duration LOADING_TIME_PER_PASSENGER = Duration.seconds(3);
 	private double timestep = 0;
@@ -25,11 +25,11 @@ public class LoadPassengersEvent extends AbstractSimEventDelegator<Bus> {
 	}
 
 	@Override
-	public void eventRoutine(Bus bus) {
+	public void eventRoutine(Server bus) {
 		BusModel m = (BusModel) this.getModel();
-		BusStop position = bus.getPosition();
+		Queue position = bus.getPosition();
 
-		int waitingPassengers = position.getPassengersInQueue();
+		int waitingPassengers = position.getTokensInQueue();
 
 		int servedPassengers = Math.min(waitingPassengers, bus.getTotalSeats());
 		if (servedPassengers < waitingPassengers) {
@@ -39,20 +39,24 @@ public class LoadPassengersEvent extends AbstractSimEventDelegator<Bus> {
 		bus.load(servedPassengers);
 		int remainingPassengers = waitingPassengers - servedPassengers;
 		double totalLoadingTime = 0;
-		totalLoadingTime = 0;
 		
-		LinkedList<Human> notPickedup = new LinkedList<Human>();
+		LinkedList<Token> notPickedup = new LinkedList<Token>();
 
 		for (int i = 0; i < servedPassengers; i++) {
-			Human h = position.getPassenger();
+			
+			if(position.getTokensInQueue() == 0) {
+				break;
+			}
+			
+			Token h = position.getToken();
 
 			if (bus.containsDestinationInRoute(h.getDestination())) {
 
 				bus.transportHuman(h);
-				double loadingTime = Bus.LOADING_TIME_PER_PASSENGER.toSeconds().value();
+				double loadingTime = Server.LOADING_TIME_PER_PASSENGER.toSeconds().value();
 
 				// picks up human from home busstop
-				LoadToken loadToken = new LoadToken(bus, loadingTime, position, h);
+				LoadToken loadToken = new LoadToken(bus, 1.0, position, h);
 				m.getTimelineSynchronizer().putToken(loadToken, false);
 
 				h.setCollected(true);
@@ -65,15 +69,15 @@ public class LoadPassengersEvent extends AbstractSimEventDelegator<Bus> {
 		}
 		if (notPickedup.size() != 0) {
 			for (int j = notPickedup.size() - 1; j >= 0; j--) {
-				position.placePassengerInFront(notPickedup.get(j));
+				position.placeTokensInFront(notPickedup.get(j));
 			}
 		}
 
 		timestep = totalLoadingTime;
 		// schedule load finished event
-		LoadFinishedEvent e = new LoadFinishedEvent(totalLoadingTime, remainingPassengers, this.getModel(),
+		LoadFinishedEvent e = new LoadFinishedEvent(1.0, remainingPassengers, this.getModel(),
 				"LoadFinished");
-		TimeAdvanceToken token = new TimeAdvanceToken(e, bus, timestep);
+		TimeAdvanceToken token = new TimeAdvanceToken(e, bus, 1.0);
 		m.getTimelineSynchronizer().putToken(token, false);
 	}
 

@@ -5,6 +5,12 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collections;
+import java.util.List;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import de.uka.ipd.sdq.simulation.abstractsimengine.AbstractSimEntityDelegator;
 import de.uka.ipd.sdq.simulation.abstractsimengine.AbstractSimEventDelegator;
@@ -15,8 +21,8 @@ import edu.kit.ipd.sdq.modsim.adaption.HLAAdapter;
 import edu.kit.ipd.sdq.modsim.adaption.DataMarker;
 import edu.kit.ipd.sdq.modsim.adaption.DataMarkerMapping;
 import edu.kit.ipd.sdq.modsim.adaption.HLAByteArrayDerivedElement;
-import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.entities.BusStop;
-import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.entities.Human;
+import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.entities.Queue;
+import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.entities.Token;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.util.Utils;
 import hla.rti1516e.AttributeHandle;
 import hla.rti1516e.AttributeHandleSet;
@@ -58,6 +64,8 @@ public class BusFederate {
 	protected ParameterHandle humanNameRegisterHandle;
 	protected ParameterHandle busStopNameRegisterHandle;
 	protected ParameterHandle destinationNameRegisterHandle;
+	
+	protected InteractionClassHandle workloadGeneratorFinished;
 
 	protected InteractionClassHandle unregisterAtBusStopHandle;
 	protected ParameterHandle humanNameUnregisterHandle;
@@ -91,6 +99,9 @@ public class BusFederate {
 	private BusModel simulation;
 	public HLAAdapter adapterService;
 
+	private int timeAdvanceRequestCounter = 0;
+
+	
 	public BusFederate(BusModel simulation) {
 		this.simulation = simulation;
 	}
@@ -143,27 +154,23 @@ public class BusFederate {
 		// others
 	
 		runTimePolicyEnabling();
-
+		
 		while (fedamb.isReadyToRun == false) {
 			rtiamb.evokeMultipleCallbacks(0.1, 0.2);
 		}
 
 		// Publish and Subscribe all Data
 		publishAndSubscribe();
-
+		List<Logger> loggers = Collections.<Logger>list(LogManager.getCurrentLoggers());
+		loggers.add(LogManager.getRootLogger());
+		for ( Logger logger : loggers ) {
+		    logger.setLevel(Level.OFF);
+		}
 		// Initialise BusStops
 		initialiseBusStops();
 
-		while (simulation.getHumans().size() != HumanSimValues.NUM_HUMANS) {
-			advanceTime(1.0);
-			rtiamb.evokeMultipleCallbacks(0.1, 0.2);
-		}
-
-		for (Human h : simulation.getHumans()) {
-			Utils.log("Human: " + h.getName());
-		}
-		System.out.println("Total # Humans:" + simulation.getHumans().size());
-
+		advanceTime(1.0);
+		
 		simulation.startSimulation();
 	}
 
@@ -223,7 +230,7 @@ public class BusFederate {
 				rtiamb.evokeMultipleCallbacks(0.1, 0.2);
 			}
 			
-			Utils.log(fedInfoStr + "Timeregulating: " + fedamb.isRegulating);
+//			Utils.log(fedInfoStr + "Timeregulating: " + fedamb.isRegulating);
 		}
 
 		if (constrainTime) {
@@ -234,7 +241,7 @@ public class BusFederate {
 			}
 			
 
-			Utils.log(fedInfoStr + "Timeconstrained: " + fedamb.isConstrained);
+//			Utils.log(fedInfoStr + "Timeconstrained: " + fedamb.isConstrained);
 		}
 
 	}
@@ -278,6 +285,11 @@ public class BusFederate {
 		busStopNameRegisterHandle = rtiamb.getParameterHandle(registerAtBusStopHandle, "BusStopName");
 		destinationNameRegisterHandle = rtiamb.getParameterHandle(registerAtBusStopHandle, "DestinationName");
 
+		workloadGeneratorFinished = rtiamb.getInteractionClassHandle("HLAinteractionRoot.WorkloadGenerteFinished");
+		rtiamb.subscribeInteractionClass(workloadGeneratorFinished);
+		
+		
+		
 		unregisterAtBusStopHandle = rtiamb.getInteractionClassHandle("HLAinteractionRoot.HumanUnRegistersAtBusStop");
 		rtiamb.subscribeInteractionClass(unregisterAtBusStopHandle);
 		humanNameUnregisterHandle = rtiamb.getParameterHandle(unregisterAtBusStopHandle, "HumanName");
@@ -312,7 +324,7 @@ public class BusFederate {
 		busStopAttributes.add(busStopNameAttributeHandle);
 		rtiamb.publishObjectClassAttributes(busStopObjectClassHandle, busStopAttributes);
 
-		Utils.log(fedInfoStr + "Published and Subscribed");
+//		Utils.log(fedInfoStr + "Published and Subscribed");
 	}
 
 	private ObjectInstanceHandle registerBusStopObject() throws RTIexception {
@@ -326,7 +338,7 @@ public class BusFederate {
 	private void initialiseBusStops() throws Exception {
 
 		
-		for (BusStop stop : simulation.getStops()) {
+		for (Queue stop : simulation.getStops()) {
 			
 			ObjectInstanceHandle oih = registerBusStopObject();
 			stop.setOih(oih);
@@ -349,7 +361,7 @@ public class BusFederate {
 	public synchronized boolean advanceTime(double timestep) throws RTIexception {
 		double advancingTo = 0;
 		boolean belowTime = true;
-		if (fedamb.federateTime + timestep <= HumanSimValues.MAX_SIM_TIME.toSeconds().value()) {
+		if (fedamb.federateTime + timestep <= BusSimulationExample.MAX_SIMULATION_TIME.toSeconds().value()) {
 			advancingTo = fedamb.federateTime + timestep;
 		} else {
 			return false;
@@ -372,6 +384,8 @@ public class BusFederate {
 			rtiamb.evokeMultipleCallbacks(0.1, 0.2);
 		}
 
+		incrementTimeAdvanceCounter();
+		
 		return belowTime;
 	}
 
@@ -430,7 +444,7 @@ public class BusFederate {
 		simevent.schedule(simentity, timestep);
 	}
 
-	public void sendHumanEnterInteraction(Human human, BusStop busStop, double loadingTime) throws RTIexception {
+	public void sendHumanEnterInteraction(Token human, Queue busStop, double loadingTime) throws RTIexception {
 		ParameterHandleValueMap parameters = rtiamb.getParameterHandleValueMapFactory().create(2);
 		HLAASCIIstring humanName = encoderFactory.createHLAASCIIstring(human.getName());
 		HLAASCIIstring busStopName = encoderFactory.createHLAASCIIstring(busStop.getName());
@@ -439,9 +453,11 @@ public class BusFederate {
 		HLAfloat64Time time = timeFactory
 				.makeTime(simulation.getSimulationControl().getCurrentSimulationTime() + loadingTime);
 		rtiamb.sendInteraction(humanEntersBusHandle, parameters, generateTag(), time);
+		
+		simulation.incrementSendEventCounter();
 	}
 
-	public void sendHumanExitsInteraction(Human human, BusStop busStop, double unloadingTime) throws RTIexception {
+	public void sendHumanExitsInteraction(Token human, Queue busStop, double unloadingTime) throws RTIexception {
 		ParameterHandleValueMap parameters = rtiamb.getParameterHandleValueMapFactory().create(2);
 		HLAASCIIstring humanName = encoderFactory.createHLAASCIIstring(human.getName());
 		HLAASCIIstring busStopName = encoderFactory.createHLAASCIIstring(busStop.getName());
@@ -449,7 +465,9 @@ public class BusFederate {
 		parameters.put(busStopNameExitHandle, busStopName.toByteArray());
 		HLAfloat64Time time = timeFactory
 				.makeTime(simulation.getSimulationControl().getCurrentSimulationTime() + unloadingTime);
+//		Utils.log(human, "Sending exit interaction");
 		rtiamb.sendInteraction(humanExitsBusHandle, parameters, generateTag(), time);
+		simulation.incrementSendEventCounter();
 	}
 
 	public double getCurrentFedTime() {
@@ -484,9 +502,9 @@ public class BusFederate {
 			}
 		}
 		
-		for (Human human : simulation.getHumans()) {
+		for (Token human : simulation.getTokens()) {
 			if (human.getOih().equals(oih)) {
-				for (BusStop stop : simulation.getStops()) {
+				for (Queue stop : simulation.getStops()) {
 					if (stop.getName().equals(destination)) {
 						human.setDestination(stop);
 						found = true;
@@ -500,13 +518,13 @@ public class BusFederate {
 
 		if (!found) {
 
-			Human hu = new Human(simulation, humanName, humanObjectClassHandle, oih);
+			Token hu = new Token(simulation, humanName, humanObjectClassHandle, oih);
 
-			simulation.addHuman(hu);
+			simulation.addToken(hu);
 
 			hu.setInitialised(true);
 
-			for(BusStop stop : simulation.getStops()) {
+			for(Queue stop : simulation.getStops()) {
 				if (stop.getName().equals(destination)) {
 					hu.setDestination(stop);
 				}
@@ -555,5 +573,13 @@ public class BusFederate {
 	
 	public boolean isAdvancingTime() {
 		return fedamb.isAdvancing;
+	}
+	
+	public void incrementTimeAdvanceCounter() {
+		timeAdvanceRequestCounter++;
+	}
+	
+	public int getTimeAdvanceCounter() {
+		return timeAdvanceRequestCounter;
 	}
 }

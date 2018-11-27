@@ -2,33 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry exported="true" kind="lib" path="C:/Users/Freddy/.p2/pool/plugins/de.uka.ipd.sdq.simulation.abstractsimengine_4.1.0.201712081107.jar" sourcepath="C:/Users/Freddy/.p2/pool/plugins/de.uka.ipd.sdq.simulation.abstractsimengine.source_4.1.0.201712081107.jar">
-		<accessrules>
-			<accessrule kind="accessible" pattern="de/uka/ipd/sdq/simulation/abstractsimengine/*"/>
-			<accessrule kind="accessible" pattern="de/uka/ipd/sdq/simulation/abstractsimengine/processes/*"/>
-			<accessrule kind="accessible" pattern="de/uka/ipd/sdq/simulation/abstractsimengine/util/*"/>
-			<accessrule ignoreifbetter="true" kind="nonaccessible" pattern="**/*"/>
-		</accessrules>
-	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="C:/Users/Freddy/.p2/pool/plugins/org.eclipse.equinox.app_1.3.400.v20150715-1528.jar" sourcepath="C:/Users/Freddy/.p2/pool/plugins/org.eclipse.equinox.app.source_1.3.400.v20150715-1528.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/C:/Users/Freddy/.p2/pool/plugins/org.eclipse.platform.doc.isv_4.6.2.v20170221-1001.jar!/reference/api"/>
-		</attributes>
-		<accessrules>
-			<accessrule kind="accessible" pattern="org/eclipse/equinox/app/*"/>
-			<accessrule kind="discouraged" pattern="org/eclipse/equinox/internal/app/*"/>
-			<accessrule kind="accessible" pattern="org/osgi/service/application/*"/>
-			<accessrule ignoreifbetter="true" kind="nonaccessible" pattern="**/*"/>
-		</accessrules>
-	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="C:/Users/Freddy/.p2/pool/plugins/de.uka.ipd.sdq.simulation_4.1.0.201712081107.jar" sourcepath="C:/Users/Freddy/.p2/pool/plugins/de.uka.ipd.sdq.simulation.source_4.1.0.201712081107.jar">
-		<accessrules>
-			<accessrule kind="accessible" pattern="de/uka/ipd/sdq/simulation/*"/>
-			<accessrule kind="accessible" pattern="de/uka/ipd/sdq/simulation/preferences/*"/>
-			<accessrule ignoreifbetter="true" kind="nonaccessible" pattern="**/*"/>
-		</accessrules>
-	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry exported="true" kind="lib" path="libs/portico.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/portico.jar" sourcepath="/portico"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

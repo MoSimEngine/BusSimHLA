@@ -205,6 +205,14 @@
                     <semantics>The name of the Human</semantics>
                 </parameter>
             </interactionClass>
+             <interactionClass>
+                 <name>WorkloadGenerteFinished</name>
+                <sharing>PublishSubscribe</sharing>
+                <dimensions/>
+                <transportation>HLAreliable</transportation>
+                <order>TimeStamp</order>
+                <semantics>An interaction to signal that a human is loaded into a bus</semantics>
+            </interactionClass>
             <interactionClass>
                 <name>HumanExitsBus</name>
                 <sharing>PublishSubscribe</sharing>

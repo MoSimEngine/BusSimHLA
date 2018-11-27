@@ -1,0 +1,16 @@
+Setting Time to DoubleValue.max
+!BusSim Federate-Info!: Creating RTIambassador
+!BusSim Federate-Info!: Connecting
+!BusSim Federate-Info!: Creating Federation
+
+-------------------------------------------------------------------
+GMS: address=LAPTOP-IVG7K78D-32150, cluster=HumanSim1, physical address=141.3.52.89:61391
+-------------------------------------------------------------------
+!BusSim Federate-Info!: Created Federation
+!BusSim Federate-Info!: Joined fedration as BusFed
+Successfully registered sync point: ReadyToRun
+Synchronization point announced: ReadyToRun
+ >>>>>>>>>> Press Enter to Continue <<<<<<<<<<
+!BusSim Federate-Info!: Achieved sync point: ReadyToRun, waiting for federation...
+Federation Synchronized: ReadyToRun
+Start serving at RTI Time 1.0

@@ -130,5 +130,7 @@ public class BusFederateAmbassador extends NullFederateAmbassador{
 	@Override
 	public void removeObjectInstance(ObjectInstanceHandle theObject, byte[] tag, OrderType sentOrdering,
 			SupplementalRemoveInfo removeInfo) throws FederateInternalError {
+		
+		Utils.log("Found remove Object Instance request");
 	}
 }

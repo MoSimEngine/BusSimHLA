@@ -4,23 +4,27 @@ import de.uka.ipd.sdq.simulation.abstractsimengine.AbstractSimEventDelegator;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationModel;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component.BusModel;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component.HumanSimValues;
-import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.entities.Bus;
+import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.entities.Server;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.util.Utils;
 
 
-public class UnloadingFinishedEvent extends AbstractSimEventDelegator<Bus> {
+public class UnloadingFinishedEvent extends AbstractSimEventDelegator<Server> {
 
     public UnloadingFinishedEvent(double unloadingTime,ISimulationModel model, String name) {
         super(model, name);
     }
 
     @Override
-    public void eventRoutine(Bus bus) {
+    public void eventRoutine(Server bus) {
     	BusModel m = (BusModel)this.getModel();
-//    	if(unloadingTime > 0.0){
-//    	Utils.log(bus, "Unloading finished. Took " + this.unloadingTime + " seconds.");
-//    	}
+
     	
+    	if(HumanSimValues.WORKLOAD_OPEN && m.getUnloadCounter() >= HumanSimValues.NUM_HUMANS) {
+    		Utils.log(bus, "Over Num_SimHumans");
+			m.getSimulationControl().stop();
+			return;
+		}
+		
         // schedule load passengers event
         LoadPassengersEvent e = new LoadPassengersEvent(this.getModel(), "Load Passengers");
         e.schedule(bus, 0);

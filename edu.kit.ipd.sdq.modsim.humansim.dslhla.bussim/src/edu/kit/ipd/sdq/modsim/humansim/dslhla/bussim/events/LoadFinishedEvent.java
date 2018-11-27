@@ -4,10 +4,10 @@ import de.uka.ipd.sdq.simulation.abstractsimengine.AbstractSimEventDelegator;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationModel;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component.BusModel;
 import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component.HumanSimValues;
-import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.entities.Bus;
+import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.entities.Server;
 
 
-public class LoadFinishedEvent extends AbstractSimEventDelegator<Bus> {
+public class LoadFinishedEvent extends AbstractSimEventDelegator<Server> {
 
 
     public LoadFinishedEvent(double loadingTime, int remainingPassengers, ISimulationModel model, String name) {
@@ -15,16 +15,8 @@ public class LoadFinishedEvent extends AbstractSimEventDelegator<Bus> {
     }
 
     @Override
-    public void eventRoutine(Bus bus) {
+    public void eventRoutine(Server bus) {
     	BusModel m = (BusModel)this.getModel();
-//    	if(loadingTime > 0.0){
-//        Utils.log(bus, "Loading finished. Took " + loadingTime + " seconds.");
-//    	}
-//        if (remainingPassengers > 0) {
-//            Utils.log(bus, "Bus is full. Remaining passengers at bus station: "
-//                    + bus.getPosition().getPassengersInQueue());
-//        }
-
         TravelEvent e = new TravelEvent(this.getModel(), "Travel");
         e.schedule(bus, 0);
     }

@@ -74,9 +74,14 @@ public class CSVHandler {
 		String workingDirectory = "C:\\HumanSimData";
 		System.out.println(workingDirectory);
 		File f = new File(workingDirectory + "\\" + fileName + ".csv");
-		if(f.exists() && !f.isDirectory()){
-		s = readCSV(fileName);
+		try {
+			f.createNewFile();
+			s = readCSV(fileName);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+
 
 		s += appendString + NEWLINE;
 	

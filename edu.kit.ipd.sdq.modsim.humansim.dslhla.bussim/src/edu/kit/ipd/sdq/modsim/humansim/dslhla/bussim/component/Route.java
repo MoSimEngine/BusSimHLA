@@ -4,24 +4,24 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.entities.BusStop;
+import edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.entities.Queue;
 
 
 
 public class Route {
 
-    private Map<BusStop, RouteSegment> segmentMap;
+    private Map<Queue, RouteSegment> segmentMap;
 
     public Route() {
-        this.segmentMap = new HashMap<BusStop, RouteSegment>();
+        this.segmentMap = new HashMap<Queue, RouteSegment>();
     }
 
-    public void addSegment(BusStop from, BusStop to, int distance, int averageSpeed) {
+    public void addSegment(Queue from, Queue to, int distance, int averageSpeed, boolean trafficJamDanger) {
         if (this.segmentMap.containsKey(from)) {
             throw new IllegalStateException("There is already a segement originating from bus stop " + from);
         }
 
-        RouteSegment s = new RouteSegment(from, to, distance, averageSpeed);
+        RouteSegment s = new RouteSegment(from, to, distance, averageSpeed, trafficJamDanger);
         this.segmentMap.put(from, s);
     }
 
@@ -37,7 +37,7 @@ public class Route {
     // return getRouteSegment(from).getAverageSpeed();
     // }
 
-    public RouteSegment getRouteSegment(BusStop from) {
+    public RouteSegment getRouteSegment(Queue from) {
         if (!this.segmentMap.containsKey(from)) {
             throw new IllegalStateException("There is no segment originating from bus stop " + from);
         }
@@ -45,7 +45,7 @@ public class Route {
         return this.segmentMap.get(from);
     }
     
-    public boolean containsBusStop(BusStop stop) {
+    public boolean containsBusStop(Queue stop) {
     	Collection<RouteSegment> c = segmentMap.values();
     	for (RouteSegment routeSegment : c) {
 			if(routeSegment.getTo().equals(stop)) {
@@ -56,27 +56,28 @@ public class Route {
     }
 
     public class RouteSegment {
-
-        private BusStop from, to;
+        private Queue from, to;
 
         // distance in kilometers
         private int distance;
 
         // average speed in kilometers per hour
         private int averageSpeed;
+    	 private boolean trafficJamDanger;
 
-        public RouteSegment(BusStop from, BusStop to, int distance, int averageSpeed) {
-            this.from = from;
-            this.to = to;
-            this.distance = distance;
-            this.averageSpeed = averageSpeed;
-        }
+         public RouteSegment(Queue from, Queue to, int distance, int averageSpeed, boolean trafficJamDanger) {
+             this.from = from;
+             this.to = to;
+             this.distance = distance;
+             this.averageSpeed = averageSpeed;
+             this.trafficJamDanger = trafficJamDanger;
+         }
 
-        public BusStop getFrom() {
+        public Queue getFrom() {
             return from;
         }
 
-        public BusStop getTo() {
+        public Queue getTo() {
             return to;
         }
 
@@ -87,7 +88,10 @@ public class Route {
         public int getAverageSpeed() {
             return averageSpeed;
         }
-
+        
+        public boolean getTrafficJamDanger() {
+        	return trafficJamDanger;
+        }
     }
 
 }

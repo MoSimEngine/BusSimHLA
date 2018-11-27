@@ -2095,3 +2095,480 @@ Command-line arguments:  -application edu.kit.ipd.sdq.modsim.humansim.dslhla.bus
 !ENTRY org.apache.log4j 4 0 2018-08-16 07:28:06.892
 !MESSAGE portico.lrc.jgroups  - Member [64bc4fdd-c237-4fb8-a463-40f3f6805a1c] apparently destroyed federation [HumanSim], but we didn't know it existed, ignoring...
 
+!SESSION 2018-11-22 16:48:32.491 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_191
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=de_DE
+Framework arguments:  -application edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim
+Command-line arguments:  -application edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim -data C:\Users\Frederik Reiche\git\BusSimHLA\edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim -dev file:C:/Users/Frederik Reiche/eclipse-workspace/.metadata/.plugins/org.eclipse.pde.core/Bus Behaviour Simulation Example/dev.properties -os win32 -ws win32 -arch x86_64 -consoleLog
+
+!ENTRY org.eclipse.gmf.runtime.common.ui.printing.win32 2 0 2018-11-22 16:48:37.736
+!MESSAGE Could not resolve module: org.eclipse.gmf.runtime.common.ui.printing.win32 [676]
+  Unresolved requirement: Fragment-Host: org.eclipse.gmf.runtime.common.ui.printing
+
+
+!ENTRY org.eclipse.osgi 4 0 2018-11-22 16:48:37.746
+!MESSAGE Application error
+!STACK 1
+java.lang.IllegalStateException: start() called with an empty event list
+	at umontreal.iro.lecuyer.simevents.Simulator.start(Simulator.java:192)
+	at org.palladiosimulator.simulation.abstractsimengine.ssj.SSJExperiment.startSimulator(SSJExperiment.java:44)
+	at de.uka.ipd.sdq.simulation.abstractsimengine.AbstractExperiment.start(AbstractExperiment.java:59)
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component.BusSimulationExample.start(BusSimulationExample.java:37)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:199)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:137)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:107)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:391)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:246)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:659)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:595)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1501)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1474)
+!SESSION 2018-11-23 10:48:55.573 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_191
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=de_DE
+Framework arguments:  -application edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim
+Command-line arguments:  -application edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim -data C:\Users\Frederik Reiche\git\BusSimHLA\edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim -dev file:C:/Users/Frederik Reiche/eclipse-workspace/.metadata/.plugins/org.eclipse.pde.core/Bus Behaviour Simulation Example/dev.properties -os win32 -ws win32 -arch x86_64 -consoleLog
+
+!ENTRY org.eclipse.gmf.runtime.common.ui.printing.win32 2 0 2018-11-23 10:49:00.836
+!MESSAGE Could not resolve module: org.eclipse.gmf.runtime.common.ui.printing.win32 [676]
+  Unresolved requirement: Fragment-Host: org.eclipse.gmf.runtime.common.ui.printing
+
+
+!ENTRY org.eclipse.osgi 4 0 2018-11-23 10:49:00.852
+!MESSAGE Application error
+!STACK 1
+java.lang.IllegalStateException: start() called with an empty event list
+	at umontreal.iro.lecuyer.simevents.Simulator.start(Simulator.java:192)
+	at org.palladiosimulator.simulation.abstractsimengine.ssj.SSJExperiment.startSimulator(SSJExperiment.java:44)
+	at de.uka.ipd.sdq.simulation.abstractsimengine.AbstractExperiment.start(AbstractExperiment.java:59)
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component.BusSimulationExample.start(BusSimulationExample.java:44)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:199)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:137)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:107)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:391)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:246)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:659)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:595)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1501)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1474)
+!SESSION 2018-11-25 10:53:46.511 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_191
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=de_DE
+Framework arguments:  -application edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim
+Command-line arguments:  -application edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim -data C:\Users\Frederik Reiche\git\BusSimHLA\edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim -dev file:C:/Users/Frederik Reiche/eclipse-workspace/.metadata/.plugins/org.eclipse.pde.core/Bus Behaviour Simulation Example/dev.properties -os win32 -ws win32 -arch x86_64 -consoleLog
+
+!ENTRY org.eclipse.gmf.runtime.common.ui.printing.win32 2 0 2018-11-25 10:59:12.127
+!MESSAGE Could not resolve module: org.eclipse.gmf.runtime.common.ui.printing.win32 [676]
+  Unresolved requirement: Fragment-Host: org.eclipse.gmf.runtime.common.ui.printing
+
+
+!ENTRY org.eclipse.osgi 4 0 2018-11-25 10:59:12.129
+!MESSAGE Application error
+!STACK 1
+java.lang.NullPointerException
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.events.LoadPassengersEvent.eventRoutine(LoadPassengersEvent.java:32)
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.events.LoadPassengersEvent.eventRoutine(LoadPassengersEvent.java:1)
+	at org.palladiosimulator.simulation.abstractsimengine.ssj.SSJSimEvent.actions(SSJSimEvent.java:59)
+	at umontreal.iro.lecuyer.simevents.Simulator.start(Simulator.java:201)
+	at org.palladiosimulator.simulation.abstractsimengine.ssj.SSJExperiment.startSimulator(SSJExperiment.java:44)
+	at de.uka.ipd.sdq.simulation.abstractsimengine.AbstractExperiment.start(AbstractExperiment.java:59)
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component.BusSimulationExample.start(BusSimulationExample.java:44)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:199)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:137)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:107)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:391)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:246)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:659)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:595)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1501)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1474)
+!SESSION 2018-11-25 11:00:57.590 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_191
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=de_DE
+Framework arguments:  -application edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim
+Command-line arguments:  -application edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim -data C:\Users\Frederik Reiche\git\BusSimHLA\edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim -dev file:C:/Users/Frederik Reiche/eclipse-workspace/.metadata/.plugins/org.eclipse.pde.core/Bus Behaviour Simulation Example/dev.properties -os win32 -ws win32 -arch x86_64 -consoleLog
+
+!ENTRY org.eclipse.gmf.runtime.common.ui.printing.win32 2 0 2018-11-25 11:01:21.023
+!MESSAGE Could not resolve module: org.eclipse.gmf.runtime.common.ui.printing.win32 [676]
+  Unresolved requirement: Fragment-Host: org.eclipse.gmf.runtime.common.ui.printing
+
+
+!ENTRY org.eclipse.osgi 4 0 2018-11-25 11:01:21.024
+!MESSAGE Application error
+!STACK 1
+java.lang.NullPointerException
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.events.LoadPassengersEvent.eventRoutine(LoadPassengersEvent.java:32)
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.events.LoadPassengersEvent.eventRoutine(LoadPassengersEvent.java:1)
+	at org.palladiosimulator.simulation.abstractsimengine.ssj.SSJSimEvent.actions(SSJSimEvent.java:59)
+	at umontreal.iro.lecuyer.simevents.Simulator.start(Simulator.java:201)
+	at org.palladiosimulator.simulation.abstractsimengine.ssj.SSJExperiment.startSimulator(SSJExperiment.java:44)
+	at de.uka.ipd.sdq.simulation.abstractsimengine.AbstractExperiment.start(AbstractExperiment.java:59)
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component.BusSimulationExample.start(BusSimulationExample.java:44)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:199)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:137)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:107)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:391)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:246)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:659)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:595)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1501)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1474)
+!SESSION 2018-11-25 11:03:55.758 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_191
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=de_DE
+Framework arguments:  -application edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim
+Command-line arguments:  -application edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim -data C:\Users\Frederik Reiche\git\BusSimHLA\edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim -dev file:C:/Users/Frederik Reiche/eclipse-workspace/.metadata/.plugins/org.eclipse.pde.core/Bus Behaviour Simulation Example/dev.properties -os win32 -ws win32 -arch x86_64 -consoleLog
+
+!ENTRY org.eclipse.gmf.runtime.common.ui.printing.win32 2 0 2018-11-25 11:04:22.017
+!MESSAGE Could not resolve module: org.eclipse.gmf.runtime.common.ui.printing.win32 [676]
+  Unresolved requirement: Fragment-Host: org.eclipse.gmf.runtime.common.ui.printing
+
+
+!ENTRY org.eclipse.osgi 4 0 2018-11-25 11:04:22.018
+!MESSAGE Application error
+!STACK 1
+java.lang.NullPointerException
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.events.LoadPassengersEvent.eventRoutine(LoadPassengersEvent.java:32)
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.events.LoadPassengersEvent.eventRoutine(LoadPassengersEvent.java:1)
+	at org.palladiosimulator.simulation.abstractsimengine.ssj.SSJSimEvent.actions(SSJSimEvent.java:59)
+	at umontreal.iro.lecuyer.simevents.Simulator.start(Simulator.java:201)
+	at org.palladiosimulator.simulation.abstractsimengine.ssj.SSJExperiment.startSimulator(SSJExperiment.java:44)
+	at de.uka.ipd.sdq.simulation.abstractsimengine.AbstractExperiment.start(AbstractExperiment.java:59)
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component.BusSimulationExample.start(BusSimulationExample.java:44)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:199)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:137)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:107)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:391)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:246)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:659)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:595)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1501)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1474)
+!SESSION 2018-11-25 11:05:52.332 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_191
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=de_DE
+Framework arguments:  -application edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim
+Command-line arguments:  -application edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim -data C:\Users\Frederik Reiche\git\BusSimHLA\edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim -dev file:C:/Users/Frederik Reiche/eclipse-workspace/.metadata/.plugins/org.eclipse.pde.core/Bus Behaviour Simulation Example/dev.properties -os win32 -ws win32 -arch x86_64 -consoleLog
+
+!ENTRY org.eclipse.gmf.runtime.common.ui.printing.win32 2 0 2018-11-25 11:08:03.620
+!MESSAGE Could not resolve module: org.eclipse.gmf.runtime.common.ui.printing.win32 [676]
+  Unresolved requirement: Fragment-Host: org.eclipse.gmf.runtime.common.ui.printing
+
+
+!ENTRY org.eclipse.osgi 4 0 2018-11-25 11:08:03.622
+!MESSAGE Application error
+!STACK 1
+java.lang.NullPointerException
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.events.LoadPassengersEvent.eventRoutine(LoadPassengersEvent.java:32)
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.events.LoadPassengersEvent.eventRoutine(LoadPassengersEvent.java:1)
+	at org.palladiosimulator.simulation.abstractsimengine.ssj.SSJSimEvent.actions(SSJSimEvent.java:59)
+	at umontreal.iro.lecuyer.simevents.Simulator.start(Simulator.java:201)
+	at org.palladiosimulator.simulation.abstractsimengine.ssj.SSJExperiment.startSimulator(SSJExperiment.java:44)
+	at de.uka.ipd.sdq.simulation.abstractsimengine.AbstractExperiment.start(AbstractExperiment.java:59)
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component.BusSimulationExample.start(BusSimulationExample.java:44)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:199)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:137)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:107)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:391)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:246)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:659)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:595)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1501)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1474)
+!SESSION 2018-11-25 11:09:11.740 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_191
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=de_DE
+Framework arguments:  -application edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim
+Command-line arguments:  -application edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim -data C:\Users\Frederik Reiche\git\BusSimHLA\edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim -dev file:C:/Users/Frederik Reiche/eclipse-workspace/.metadata/.plugins/org.eclipse.pde.core/Bus Behaviour Simulation Example/dev.properties -os win32 -ws win32 -arch x86_64 -consoleLog
+
+!ENTRY org.eclipse.gmf.runtime.common.ui.printing.win32 2 0 2018-11-25 11:09:35.710
+!MESSAGE Could not resolve module: org.eclipse.gmf.runtime.common.ui.printing.win32 [676]
+  Unresolved requirement: Fragment-Host: org.eclipse.gmf.runtime.common.ui.printing
+
+
+!ENTRY org.eclipse.osgi 4 0 2018-11-25 11:09:35.711
+!MESSAGE Application error
+!STACK 1
+java.lang.NullPointerException
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.events.LoadPassengersEvent.eventRoutine(LoadPassengersEvent.java:32)
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.events.LoadPassengersEvent.eventRoutine(LoadPassengersEvent.java:1)
+	at org.palladiosimulator.simulation.abstractsimengine.ssj.SSJSimEvent.actions(SSJSimEvent.java:59)
+	at umontreal.iro.lecuyer.simevents.Simulator.start(Simulator.java:201)
+	at org.palladiosimulator.simulation.abstractsimengine.ssj.SSJExperiment.startSimulator(SSJExperiment.java:44)
+	at de.uka.ipd.sdq.simulation.abstractsimengine.AbstractExperiment.start(AbstractExperiment.java:59)
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component.BusSimulationExample.start(BusSimulationExample.java:44)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:199)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:137)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:107)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:391)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:246)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:659)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:595)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1501)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1474)
+!SESSION 2018-11-25 11:10:52.254 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_191
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=de_DE
+Framework arguments:  -application edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim
+Command-line arguments:  -application edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim -data C:\Users\Frederik Reiche\git\BusSimHLA\edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim -dev file:C:/Users/Frederik Reiche/eclipse-workspace/.metadata/.plugins/org.eclipse.pde.core/Bus Behaviour Simulation Example/dev.properties -os win32 -ws win32 -arch x86_64 -consoleLog
+
+!ENTRY org.eclipse.gmf.runtime.common.ui.printing.win32 2 0 2018-11-25 11:10:54.398
+!MESSAGE Could not resolve module: org.eclipse.gmf.runtime.common.ui.printing.win32 [676]
+  Unresolved requirement: Fragment-Host: org.eclipse.gmf.runtime.common.ui.printing
+
+
+!ENTRY org.eclipse.osgi 4 0 2018-11-25 11:10:54.399
+!MESSAGE Application error
+!STACK 1
+java.lang.NullPointerException
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component.BusFederate.getCurrentFedTime(BusFederate.java:456)
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.util.Utils.log(Utils.java:24)
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.util.Utils.log(Utils.java:34)
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.entities.Queue.<init>(Queue.java:27)
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component.BusModel.init(BusModel.java:48)
+	at org.palladiosimulator.simulation.abstractsimengine.ssj.SSJModel.init(SSJModel.java:54)
+	at de.uka.ipd.sdq.simulation.abstractsimengine.AbstractExperiment.start(AbstractExperiment.java:52)
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component.BusSimulationExample.start(BusSimulationExample.java:44)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:199)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:137)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:107)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:391)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:246)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:659)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:595)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1501)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1474)
+!SESSION 2018-11-25 11:11:01.808 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_191
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=de_DE
+Framework arguments:  -application edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim
+Command-line arguments:  -application edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim -data C:\Users\Frederik Reiche\git\BusSimHLA\edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim -dev file:C:/Users/Frederik Reiche/eclipse-workspace/.metadata/.plugins/org.eclipse.pde.core/Bus Behaviour Simulation Example/dev.properties -os win32 -ws win32 -arch x86_64 -consoleLog
+
+!ENTRY org.eclipse.gmf.runtime.common.ui.printing.win32 2 0 2018-11-25 11:11:03.977
+!MESSAGE Could not resolve module: org.eclipse.gmf.runtime.common.ui.printing.win32 [676]
+  Unresolved requirement: Fragment-Host: org.eclipse.gmf.runtime.common.ui.printing
+
+
+!ENTRY org.eclipse.osgi 4 0 2018-11-25 11:11:03.978
+!MESSAGE Application error
+!STACK 1
+java.lang.NullPointerException
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component.BusFederate.getCurrentFedTime(BusFederate.java:456)
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.util.Utils.log(Utils.java:24)
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.util.Utils.log(Utils.java:34)
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.entities.Queue.<init>(Queue.java:27)
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component.BusModel.init(BusModel.java:48)
+	at org.palladiosimulator.simulation.abstractsimengine.ssj.SSJModel.init(SSJModel.java:54)
+	at de.uka.ipd.sdq.simulation.abstractsimengine.AbstractExperiment.start(AbstractExperiment.java:52)
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component.BusSimulationExample.start(BusSimulationExample.java:44)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:199)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:137)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:107)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:391)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:246)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:659)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:595)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1501)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1474)
+!SESSION 2018-11-25 11:11:32.687 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_191
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=de_DE
+Framework arguments:  -application edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim
+Command-line arguments:  -application edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim -data C:\Users\Frederik Reiche\git\BusSimHLA\edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim -dev file:C:/Users/Frederik Reiche/eclipse-workspace/.metadata/.plugins/org.eclipse.pde.core/Bus Behaviour Simulation Example/dev.properties -os win32 -ws win32 -arch x86_64 -consoleLog
+
+!ENTRY org.eclipse.gmf.runtime.common.ui.printing.win32 2 0 2018-11-25 11:11:53.777
+!MESSAGE Could not resolve module: org.eclipse.gmf.runtime.common.ui.printing.win32 [676]
+  Unresolved requirement: Fragment-Host: org.eclipse.gmf.runtime.common.ui.printing
+
+
+!ENTRY org.eclipse.osgi 4 0 2018-11-25 11:11:53.780
+!MESSAGE Application error
+!STACK 1
+java.lang.NullPointerException
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.events.LoadPassengersEvent.eventRoutine(LoadPassengersEvent.java:32)
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.events.LoadPassengersEvent.eventRoutine(LoadPassengersEvent.java:1)
+	at org.palladiosimulator.simulation.abstractsimengine.ssj.SSJSimEvent.actions(SSJSimEvent.java:59)
+	at umontreal.iro.lecuyer.simevents.Simulator.start(Simulator.java:201)
+	at org.palladiosimulator.simulation.abstractsimengine.ssj.SSJExperiment.startSimulator(SSJExperiment.java:44)
+	at de.uka.ipd.sdq.simulation.abstractsimengine.AbstractExperiment.start(AbstractExperiment.java:59)
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component.BusSimulationExample.start(BusSimulationExample.java:44)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:199)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:137)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:107)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:391)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:246)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:659)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:595)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1501)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1474)
+!SESSION 2018-11-25 11:14:21.353 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_191
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=de_DE
+Framework arguments:  -application edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim
+Command-line arguments:  -application edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim -data C:\Users\Frederik Reiche\git\BusSimHLA\edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim -dev file:C:/Users/Frederik Reiche/eclipse-workspace/.metadata/.plugins/org.eclipse.pde.core/Bus Behaviour Simulation Example/dev.properties -os win32 -ws win32 -arch x86_64 -consoleLog
+
+!ENTRY org.eclipse.gmf.runtime.common.ui.printing.win32 2 0 2018-11-25 11:14:42.013
+!MESSAGE Could not resolve module: org.eclipse.gmf.runtime.common.ui.printing.win32 [676]
+  Unresolved requirement: Fragment-Host: org.eclipse.gmf.runtime.common.ui.printing
+
+
+!ENTRY org.eclipse.osgi 4 0 2018-11-25 11:14:42.014
+!MESSAGE Application error
+!STACK 1
+java.lang.NullPointerException
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.events.LoadPassengersEvent.eventRoutine(LoadPassengersEvent.java:35)
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.events.LoadPassengersEvent.eventRoutine(LoadPassengersEvent.java:1)
+	at org.palladiosimulator.simulation.abstractsimengine.ssj.SSJSimEvent.actions(SSJSimEvent.java:59)
+	at umontreal.iro.lecuyer.simevents.Simulator.start(Simulator.java:201)
+	at org.palladiosimulator.simulation.abstractsimengine.ssj.SSJExperiment.startSimulator(SSJExperiment.java:44)
+	at de.uka.ipd.sdq.simulation.abstractsimengine.AbstractExperiment.start(AbstractExperiment.java:59)
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component.BusSimulationExample.start(BusSimulationExample.java:44)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:199)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:137)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:107)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:391)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:246)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:659)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:595)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1501)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1474)
+!SESSION 2018-11-25 11:25:09.894 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_191
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=de_DE
+Framework arguments:  -application edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim
+Command-line arguments:  -application edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim -data C:\Users\Frederik Reiche\git\BusSimHLA\edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim -dev file:C:/Users/Frederik Reiche/eclipse-workspace/.metadata/.plugins/org.eclipse.pde.core/Bus Behaviour Simulation Example/dev.properties -os win32 -ws win32 -arch x86_64 -consoleLog
+
+!ENTRY org.eclipse.gmf.runtime.common.ui.printing.win32 2 0 2018-11-25 11:25:33.750
+!MESSAGE Could not resolve module: org.eclipse.gmf.runtime.common.ui.printing.win32 [676]
+  Unresolved requirement: Fragment-Host: org.eclipse.gmf.runtime.common.ui.printing
+
+
+!ENTRY org.eclipse.osgi 4 0 2018-11-25 11:25:33.750
+!MESSAGE Application error
+!STACK 1
+java.lang.ArithmeticException: / by zero
+	at java.math.BigDecimal.divideAndRound(Unknown Source)
+	at java.math.BigDecimal.divide(Unknown Source)
+	at java.math.BigDecimal.divide(Unknown Source)
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.events.TravelEvent.eventRoutine(TravelEvent.java:32)
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.events.TravelEvent.eventRoutine(TravelEvent.java:1)
+	at org.palladiosimulator.simulation.abstractsimengine.ssj.SSJSimEvent.actions(SSJSimEvent.java:59)
+	at umontreal.iro.lecuyer.simevents.Simulator.start(Simulator.java:201)
+	at org.palladiosimulator.simulation.abstractsimengine.ssj.SSJExperiment.startSimulator(SSJExperiment.java:44)
+	at de.uka.ipd.sdq.simulation.abstractsimengine.AbstractExperiment.start(AbstractExperiment.java:59)
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component.BusSimulationExample.start(BusSimulationExample.java:44)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:199)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:137)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:107)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:391)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:246)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:659)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:595)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1501)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1474)
+!SESSION 2018-11-26 09:36:29.119 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_191
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=de_DE
+Framework arguments:  -application edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim
+Command-line arguments:  -application edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim -data C:\Users\Frederik Reiche\git\BusSimHLA\edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim -dev file:C:/Users/Frederik Reiche/eclipse-workspace/.metadata/.plugins/org.eclipse.pde.core/Bus Behaviour Simulation Example/dev.properties -os win32 -ws win32 -arch x86_64 -consoleLog
+
+!ENTRY org.eclipse.gmf.runtime.common.ui.printing.win32 2 0 2018-11-26 09:36:34.927
+!MESSAGE Could not resolve module: org.eclipse.gmf.runtime.common.ui.printing.win32 [676]
+  Unresolved requirement: Fragment-Host: org.eclipse.gmf.runtime.common.ui.printing
+
+
+!ENTRY org.eclipse.osgi 4 0 2018-11-26 09:36:34.927
+!MESSAGE Application error
+!STACK 1
+java.lang.IllegalStateException: start() called with an empty event list
+	at umontreal.iro.lecuyer.simevents.Simulator.start(Simulator.java:192)
+	at org.palladiosimulator.simulation.abstractsimengine.ssj.SSJExperiment.startSimulator(SSJExperiment.java:44)
+	at de.uka.ipd.sdq.simulation.abstractsimengine.AbstractExperiment.start(AbstractExperiment.java:59)
+	at edu.kit.ipd.sdq.modsim.humansim.dslhla.bussim.component.BusSimulationExample.start(BusSimulationExample.java:44)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:199)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:137)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:107)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:391)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:246)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:659)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:595)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1501)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1474)

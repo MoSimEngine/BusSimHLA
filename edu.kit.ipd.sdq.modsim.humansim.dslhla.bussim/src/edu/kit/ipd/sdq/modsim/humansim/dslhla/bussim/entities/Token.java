@@ -6,10 +6,10 @@ import hla.rti1516e.ObjectClassHandle;
 import hla.rti1516e.ObjectInstanceHandle;
 
 
-public class Human extends AbstractSimEntityDelegator {
+public class Token extends AbstractSimEntityDelegator {
 
 
-	private BusStop destination;
+	private Queue destination;
 	
 	private volatile boolean collected;
 
@@ -25,7 +25,7 @@ public class Human extends AbstractSimEntityDelegator {
 	
 
 
-	public Human(ISimulationModel model, String name, ObjectClassHandle och, ObjectInstanceHandle oih) {
+	public Token(ISimulationModel model, String name, ObjectClassHandle och, ObjectInstanceHandle oih) {
 		super(model, name);
 
 		this.setOih(oih);
@@ -35,18 +35,18 @@ public class Human extends AbstractSimEntityDelegator {
 	
 	}
 	
-	public Human(ISimulationModel model, String name, ObjectClassHandle och) {
+	public Token(ISimulationModel model, String name, ObjectClassHandle och) {
 		super(model, name);
 	}
 	
 	
 
 	
-	public BusStop getDestination(){
+	public Queue getDestination(){
 		return this.destination;
 	}
 	
-	public void setDestination(BusStop destination){
+	public void setDestination(Queue destination){
 		this.destination = destination;
 	}
 	
