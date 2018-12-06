@@ -33,6 +33,7 @@ public class BusSimulationExample implements IApplication {
 			Utils.log("Setting Time to DoubleValue.max");
 		}
 		this.simControl.setMaxSimTime((long) MAX_SIMULATION_TIME.toSeconds().value());
+		Utils.log("Simulationtime:" + MAX_SIMULATION_TIME.toSeconds().value());
 		this.component = new BusFederate(model);
 		this.model.setComponent(component);
 		

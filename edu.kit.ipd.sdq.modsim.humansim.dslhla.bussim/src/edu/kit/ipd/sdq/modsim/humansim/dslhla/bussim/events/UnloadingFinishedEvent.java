@@ -20,7 +20,6 @@ public class UnloadingFinishedEvent extends AbstractSimEventDelegator<Server> {
 
     	
     	if(HumanSimValues.WORKLOAD_OPEN && m.getUnloadCounter() >= HumanSimValues.NUM_HUMANS) {
-    		Utils.log(bus, "Over Num_SimHumans");
 			m.getSimulationControl().stop();
 			return;
 		}

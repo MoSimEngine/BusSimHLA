@@ -65,7 +65,6 @@ public class BusFederate {
 	protected ParameterHandle busStopNameRegisterHandle;
 	protected ParameterHandle destinationNameRegisterHandle;
 	
-	protected InteractionClassHandle workloadGeneratorFinished;
 
 	protected InteractionClassHandle unregisterAtBusStopHandle;
 	protected ParameterHandle humanNameUnregisterHandle;
@@ -100,6 +99,7 @@ public class BusFederate {
 	public HLAAdapter adapterService;
 
 	private int timeAdvanceRequestCounter = 0;
+	private boolean stopping = false;
 
 	
 	public BusFederate(BusModel simulation) {
@@ -284,11 +284,6 @@ public class BusFederate {
 		humanNameRegisterHandle = rtiamb.getParameterHandle(registerAtBusStopHandle, "HumanName");
 		busStopNameRegisterHandle = rtiamb.getParameterHandle(registerAtBusStopHandle, "BusStopName");
 		destinationNameRegisterHandle = rtiamb.getParameterHandle(registerAtBusStopHandle, "DestinationName");
-
-		workloadGeneratorFinished = rtiamb.getInteractionClassHandle("HLAinteractionRoot.WorkloadGenerteFinished");
-		rtiamb.subscribeInteractionClass(workloadGeneratorFinished);
-		
-		
 		
 		unregisterAtBusStopHandle = rtiamb.getInteractionClassHandle("HLAinteractionRoot.HumanUnRegistersAtBusStop");
 		rtiamb.subscribeInteractionClass(unregisterAtBusStopHandle);
@@ -581,5 +576,13 @@ public class BusFederate {
 	
 	public int getTimeAdvanceCounter() {
 		return timeAdvanceRequestCounter;
+	}
+	
+	public void stopSim() {
+		if(!stopping) {
+		   stopping = true;
+		   Utils.log("Stopping Sim");
+		   simulation.getSimulationControl().stop();
+		}
 	}
 }
